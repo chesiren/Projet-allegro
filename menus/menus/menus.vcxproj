@@ -77,6 +77,7 @@
     <Allegro_AddonFont>true</Allegro_AddonFont>
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Allegro_AddonImage>true</Allegro_AddonImage>
@@ -86,6 +87,7 @@
     <Allegro_AddonFont>true</Allegro_AddonFont>
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Allegro_AddonImage>true</Allegro_AddonImage>
@@ -95,6 +97,7 @@
     <Allegro_AddonFont>true</Allegro_AddonFont>
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Allegro_AddonImage>true</Allegro_AddonImage>
@@ -104,6 +107,7 @@
     <Allegro_AddonFont>true</Allegro_AddonFont>
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

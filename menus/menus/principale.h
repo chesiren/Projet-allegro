@@ -7,6 +7,7 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_native_dialog.h>
+#include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
@@ -21,6 +22,10 @@
 #define PURPLE al_map_rgb(128,0,255)
 #define GREEN al_map_rgb(0,128,0)
 #define RED al_map_rgb(200,0,0)
+
+//#define GRAVITY 5
+//#define PULSE 5
+#define TICK 60
 
 // menu
 void InitMenu(void);
@@ -47,15 +52,25 @@ ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer;
 ALLEGRO_FONT* arial72;
 ALLEGRO_FONT* arial32;
+ALLEGRO_BITMAP* bitmape;
 
 int SCREENX;
 int SCREENY;
 int mx, my, x, y;
 int language = 1;
 
+float jump = 0.00;
+float pulse = 20.00;
+float gravity = -2.00;
+float gr = 0.00;
 bool Menu = 0;
 bool Options = 0;
 bool Game = 0;
+
+bool right = 0;
+bool up = 0;
+bool down = 0;
+bool left = 0;
 
 char options[16] = "Options";
 char jouer[16] = "Jouer";

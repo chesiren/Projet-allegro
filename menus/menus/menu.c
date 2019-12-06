@@ -64,9 +64,9 @@ void InitMenu()
 		Error("al_init_image_addon()");
 
 	// creation de timer ( pour du graphisme à changer en 1.0/60 )
-	timer = al_create_timer(1.0 / 2);
+	timer = al_create_timer(1.0 / TICK);
 	if (!timer)
-		Error("al_create_timer(1.0/2)");
+		Error("al_create_timer(1.0/60)");
 
 	// mise en place d'une file d'evenements
 	queue = al_create_event_queue();
@@ -116,6 +116,7 @@ void RunMenu()
 			Button(x - 200, y + 100, x + 200, y + 200, BLACK, arial72, WHITE, quitter);
 		}
 		else {
+			
 			Button(x - 200, y + 100, x + 200, y + 200, LIGHTBLUE, arial72, WHITE, quitter);
 		}
 		
@@ -292,7 +293,6 @@ void RunGame()
 	Game = 1;	
 	int x = SCREENX / 2; // position du rectangle
 	int y = SCREENY / 2;
-	int impulse = 0; // jump power
 
 	while (Game) {
 		// 1 effacer le double buffer
@@ -312,6 +312,7 @@ void RunGame()
 		ALLEGRO_EVENT event = { 0 };
 		al_wait_for_event(queue, &event);
 
+		
 		// clavier
 		if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
 			printf("%d presse dans boucle jeu\n", event.keyboard.keycode);
@@ -319,19 +320,41 @@ void RunGame()
 			case ALLEGRO_KEY_F2: Game = 0; break;
 			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
 			}
-			if (event.keyboard.keycode == ALLEGRO_KEY_UP && y == (SCREENY - 120)) y -= 200;
-			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) x += 10;
-			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) y += 10;
-			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) x -= 10;
+			if (event.keyboard.keycode == ALLEGRO_KEY_UP) up = 1;
+			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+				right = 1;
+			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+				down = 1;
+			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT){
+				left = 1;
+			}
+		}
+		if (event.type == ALLEGRO_EVENT_KEY_UP) {
+			printf("%d relache dans boucle jeu\n", event.keyboard.keycode);
+			if (event.keyboard.keycode == ALLEGRO_KEY_UP) up = 0;
+			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+				right = 0;
+			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+				down = 0;
+			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
+				left = 0;
+			}
 		}
 		// caractères et répétitions
-		else if (event.type == ALLEGRO_EVENT_KEY_CHAR) {
+		/*else if (event.type == ALLEGRO_EVENT_KEY_CHAR) {
 			char* label = event.keyboard.repeat ? "repeat" : "KEY_CHAR";
-			if (event.keyboard.keycode == ALLEGRO_KEY_UP && y == (SCREENY - 120)) y -= 200;
-			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) x += 10;
+			if (event.keyboard.keycode == ALLEGRO_KEY_UP && y == (SCREENY - 120)) {
+				jump = 1.00;
+				pulse = 10.00;
+			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) x += 10; 
 			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) y += 10;
 			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) x -= 10;
-		}
+		}*/
 		// souris
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			printf("bouton %d presse dans le jeu\n", event.mouse.button);
@@ -359,16 +382,47 @@ void RunGame()
 		}
 		// timer
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
-			//printf("bp");
+			//printf("|");
+
+			//gravite
+			if (jump == 0)
+			{
+				//y += GRAVITY;
+
+				y -= gravity;
+				gravity -= 0.1;
+				if (y > SCREENY - 120) 
+					y = SCREENY - 120;
+			}
+			else if (jump>0)
+			{
+				y -= pulse;
+				pulse -= 0.1;
+				jump *= 0.01;
+				gravity = 1.00;
+			}
+
+			// controles
+			if (right == 1) {
+				x += 5;
+			}
+			if (up == 1) {
+				if (y == (SCREENY - 120)) {
+					jump = 1.00;
+					pulse = 10.00;
+				}
+			}
+			if (left == 1) {
+				x -= 5;
+			}
+			if (down == 1) {
+				y += 5;
+			}
 		}
 		// controle fin du programme
 		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			exit(EXIT_SUCCESS);
 		}
-		// gravite
-		y += 9;
-		if (y > SCREENY - 120)
-			y = SCREENY - 120;
 	}
 }
 
