@@ -1,0 +1,5 @@
+﻿  menu.c
+C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(92,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
+C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(202,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
+C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(291,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
+  menus.vcxproj -> C:\Users\acoup\Desktop\visualstudio\menus\Debug\menus.exe
