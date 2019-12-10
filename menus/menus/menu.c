@@ -279,7 +279,7 @@ void DestroyOptions()
 
 void InitGame()
 {
-	// préparation
+	GROUND = SCREENY - 80;
 }
 
 /*******************************************
@@ -290,16 +290,21 @@ void RunGame()
 {
 	printf("========arrivee dans jeu\n");
 	al_flush_event_queue;
-	Game = 1;	
+	Game = 1;
 	int x = SCREENX / 2; // position du rectangle
 	int y = SCREENY / 2;
+	int px = SCREENX / 2; // position du rectangle
+	int py = SCREENY / 2;
 
 	while (Game) {
 		// 1 effacer le double buffer
 		al_clear_to_color(SKY);
 		// 2 le rectangle à sa position x,y dans le double buffer
-		al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN);
-		al_draw_filled_rectangle(x, y, x + 20, y + 20, BLUE); // cube
+		al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN); // sol
+		al_draw_filled_rectangle(0, SCREENY - 250, SCREENX/2, SCREENY-200, GREEN); // platerforme
+		al_draw_filled_rectangle(0, SCREENY, SCREENX/3, SCREENY-200, GREEN); // cube gauche
+		al_draw_filled_rectangle(SCREENX-200, SCREENY, SCREENX, SCREENY-200, GREEN); // cube droit
+		al_draw_filled_rectangle(px, py, px + 20, py + 20, BLUE); // cube
 		if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
 			Button(0, 0, 60, 40, BLACK, arial32, WHITE, "<==");
 		}
@@ -383,41 +388,55 @@ void RunGame()
 		// timer
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			//printf("|");
-
 			//gravite
 			if (jump == 0)
 			{
 				//y += GRAVITY;
-
-				y -= gravity;
-				gravity -= 0.1;
-				if (y > SCREENY - 120) 
-					y = SCREENY - 120;
+				if (c_down == 0) {
+					y -= gravity;
+					gravity -= 0.1;
+					if (y > GROUND)
+						y = GROUND;
+				}
 			}
-			else if (jump>0)
+			else if (jump > 0)
 			{
-				y -= pulse;
-				pulse -= 0.1;
-				jump *= 0.01;
-				gravity = 1.00;
+				if (c_up == 0) {
+					y -= pulse;
+					pulse -= 0.1;
+					if (pulse < 8.00) pulse = 0.00;
+					jump *= 0.01;
+					gravity = 1.00;
+				}
+				else {
+					jump = 0.00;
+					pulse = 0.00;
+					gravity = 1.00;
+				}
 			}
 
 			// controles
 			if (right == 1) {
-				x += 5;
+				if (c_right == 0)
+					x += 5;
 			}
 			if (up == 1) {
-				if (y == (SCREENY - 120)) {
+				if (c_down == 1 && c_up == 0) {
 					jump = 1.00;
 					pulse = 10.00;
 				}
 			}
 			if (left == 1) {
-				x -= 5;
+				if (c_left == 0)
+					x -= 5;
 			}
 			if (down == 1) {
-				y += 5;
+				if (c_down == 0)
+					y += 5;
 			}
+			Collision(&x, &y);
+			px = x;
+			py = y;
 		}
 		// controle fin du programme
 		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -433,6 +452,7 @@ void RunGame()
 void DestroyGame()
 {
 	// libération mémoire des pointeurs alloués pour le jeu
+
 }
 
 /*******************************************
@@ -452,4 +472,44 @@ void Button(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* f
 	
 	al_draw_filled_rectangle(x1, y1, x2, y2, color);
 	al_draw_textf(font, textcolor, x1 + (x2 - x1) / 2, y1, ALLEGRO_ALIGN_CENTER, text);
+}
+
+void Collision(int *x, int *y)
+{
+	ALLEGRO_BITMAP* bitmap = al_get_backbuffer(display);
+	ALLEGRO_COLOR color_down = al_get_pixel(bitmap, *x + 10, *y + 21);
+	ALLEGRO_COLOR color_up = al_get_pixel(bitmap, *x + 10, *y - 15);
+	ALLEGRO_COLOR color_right = al_get_pixel(bitmap, *x + 21, *y + 10);
+	ALLEGRO_COLOR color_left = al_get_pixel(bitmap, *x - 1, *y + 10);
+
+	unsigned char r, g, b;
+	al_unmap_rgb(color_down, &r, &g, &b);
+	
+	c_down = 0;
+	if (r == 0 && g == 128 && b == 0) {
+		c_down = 1;
+	}
+
+	al_unmap_rgb(color_up, &r, &g, &b);
+
+	c_up = 0;
+	if (r == 0 && g == 128 && b == 0) {
+		c_up = 1;
+	}
+
+	al_unmap_rgb(color_right, &r, &g, &b);
+
+	c_right = 0;
+	if (r == 0 && g == 128 && b == 0) {
+		c_right = 1;
+	}
+
+	al_unmap_rgb(color_left, &r, &g, &b);
+
+	c_left = 0;
+	if (r == 0 && g == 128 && b == 0) {
+		c_left = 1;
+	}
+
+	printf("(%d,%d,%d)\n", r, g, b);
 }

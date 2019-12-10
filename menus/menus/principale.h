@@ -45,6 +45,7 @@ void DestroyGame(void);
 // outils
 void Error(char* txt);
 void Button(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* font, ALLEGRO_COLOR textcolor, char text[]);
+void Collision(int *x, int *y);
 
 // globales
 ALLEGRO_DISPLAY* display;
@@ -56,13 +57,19 @@ ALLEGRO_BITMAP* bitmape;
 
 int SCREENX;
 int SCREENY;
+int GROUND;
 int mx, my, x, y;
 int language = 1;
 
 float jump = 0.00;
 float pulse = 20.00;
 float gravity = -2.00;
-float gr = 0.00;
+
+bool c_up = 0;
+bool c_right = 0;
+bool c_left = 0;
+bool c_down = 0;
+
 bool Menu = 0;
 bool Options = 0;
 bool Game = 0;
