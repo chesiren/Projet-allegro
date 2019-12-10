@@ -8,7 +8,7 @@ typedef struct bouton {
 	int etat; // 0,1 ou 2
 	ALLEGRO_BITMAP* im[max_im];
 };*/
-
+ALLEGRO_BITMAP* hitbox;        // l'image
 int main()
 {
 	InitMenu();
@@ -203,7 +203,6 @@ void RunOptions()
 	printf("========arrivee dans sous menu\n");
 	al_flush_event_queue;
 	Options = 1;
-	ALLEGRO_DISPLAY_MODE disp_data;
 
 	while (Options) {
 		int x = SCREENX / 2;
@@ -364,30 +363,27 @@ void RunGame()
 	int y = SCREENY / 2;
 	int px = SCREENX / 2; // position du rectangle
 	int py = SCREENY / 2;
-	ALLEGRO_BITMAP* image;        // l'image
+	ALLEGRO_BITMAP* background;        // l'image
 
-	if (!al_init())
-		Error("al_init()");
-
-	//nécessaire pour laod et save bitmap
-	if (!al_init_image_addon())
-		Error("al_init_image_addon()");
-
-	// charger une image dans le programme
-	image = al_load_bitmap("image.bmp");
-	if (!image)
-		Error("al_load_bitmap()");
+	background = al_load_bitmap("background.bmp");
+	if (!background)
+		Error("al_load_background()");
+	hitbox = al_load_bitmap("hitbox.bmp");
+	if (!hitbox)
+		Error("al_load_hitbox()");
 
 	while (Game) {
+		
 		// 1 effacer le double buffer
 		al_clear_to_color(SKY);
 		// 2 le rectangle à sa position x,y dans le double buffer
-		al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN); // sol
+		/*al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN); // sol
 		al_draw_filled_rectangle(0, SCREENY - 250, SCREENX/2, SCREENY-200, GREEN); // platerforme
 		al_draw_filled_rectangle(0, SCREENY, SCREENX/3, SCREENY-200, GREEN); // cube gauche
-		al_draw_filled_rectangle(SCREENX-200, SCREENY, SCREENX, SCREENY-200, GREEN); // cube droit
+		al_draw_filled_rectangle(SCREENX-200, SCREENY, SCREENX, SCREENY-200, GREEN); // cube droit*/
+		al_draw_bitmap(background, 0, 0, 0); // décord
 		if (im == 1) {
-			al_draw_bitmap(image, 500, 600, 0);
+			al_draw_bitmap(hitbox, 0, 0, 0);
 		}
 		al_draw_filled_rectangle(px, py, px + 20, py + 20, BLUE); // cube
 		if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
@@ -530,7 +526,7 @@ void RunGame()
 			exit(EXIT_SUCCESS);
 		}
 	}
-	al_destroy_bitmap(image);
+	al_destroy_bitmap(hitbox);
 }
 
 /*******************************************
@@ -571,11 +567,12 @@ void Button(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* f
 
 void Collision(int *x, int *y)
 {
+	//ALLEGRO_BITMAP* bitmap = al_get_backbuffer(display);
 	ALLEGRO_BITMAP* bitmap = al_get_backbuffer(display);
-	ALLEGRO_COLOR color_down = al_get_pixel(bitmap, *x + 10, *y + 21);
-	ALLEGRO_COLOR color_up = al_get_pixel(bitmap, *x + 10, *y - 15);
-	ALLEGRO_COLOR color_right = al_get_pixel(bitmap, *x + 21, *y + 10);
-	ALLEGRO_COLOR color_left = al_get_pixel(bitmap, *x - 1, *y + 10);
+	ALLEGRO_COLOR color_down = al_get_pixel(hitbox, *x + 10, *y + 21);
+	ALLEGRO_COLOR color_up = al_get_pixel(hitbox, *x + 10, *y - 15);
+	ALLEGRO_COLOR color_right = al_get_pixel(hitbox, *x + 21, *y + 10);
+	ALLEGRO_COLOR color_left = al_get_pixel(hitbox, *x - 1, *y + 10);
 
 	unsigned char r, g, b;
 	al_unmap_rgb(color_down, &r, &g, &b);
