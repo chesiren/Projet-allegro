@@ -38,10 +38,11 @@ void InitMenu()
 		Error("al_install_mouse()");
 	if (!al_init_primitives_addon())
 		Error("al_init_primitives_addon()");
-	al_init_font_addon();
+	if (!al_init_font_addon())
+		Error("al_init_font_addon()");
 	if (!al_init_ttf_addon())
 		Error("al_init_ttf_addon()");
-
+	
 	// récupération de la police voulue
 	arial72 = al_load_font("arial.ttf", 72, 0);
 	if (!arial72)
@@ -202,20 +203,62 @@ void RunOptions()
 	printf("========arrivee dans sous menu\n");
 	al_flush_event_queue;
 	Options = 1;
+	ALLEGRO_DISPLAY_MODE disp_data;
 
 	while (Options) {
 		int x = SCREENX / 2;
 		int y = SCREENY / 2;
 		// 1 effacer le double buffer
 		al_clear_to_color(SKY);
-		// 2 le rectangle à sa position x,y dans le double buffer
-		al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN);
-		al_draw_filled_rectangle(SCREENX*0.2, 0, SCREENX*0.8, SCREENY, GREY);
+		// 2 rectangles
+		al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN); // sol vert
+		al_draw_filled_rectangle(SCREENX*0.2, 0, SCREENX*0.8, SCREENY, GREY); // middle
 		if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
 			Button(0, 0, 60, 40, BLACK, arial32, WHITE, "<==");
 		}
 		else {
 			Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
+		}
+
+
+		if (BSelectDisplay == 1) {
+			// select
+			if (mx >= SCREENX / 2 - 100 && my >= SCREENY / 2 - 100 && mx <= SCREENX / 2 + 100 && my <= SCREENY / 2 - 50) {
+				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2 - 100, SCREENX / 2 + 100, SCREENY / 2 - 50, WHITE);
+				al_draw_textf(arial32, LIGHTBLUE, SCREENX / 2, SCREENY / 2 - 90, ALLEGRO_ALIGN_CENTER, "select");
+			}
+			else {
+				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2 - 100, SCREENX / 2 + 100, SCREENY / 2 - 50, WHITE);
+				al_draw_textf(arial32, BLACK, SCREENX / 2, SCREENY / 2 - 90, ALLEGRO_ALIGN_CENTER, "select");
+			}
+			// window
+			if (mx >= SCREENX / 2 - 100 && my >= SCREENY / 2 - 50 && mx <= SCREENX / 2 + 100 && my <= SCREENY / 2) {
+				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2 - 50, SCREENX / 2 + 100, SCREENY / 2, LIGHTGREY);
+				al_draw_textf(arial32, LIGHTBLUE, SCREENX / 2, SCREENY / 2 - 90 + 50, ALLEGRO_ALIGN_CENTER, "1024, 768");
+			}
+			else {
+				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2 - 50, SCREENX / 2 + 100, SCREENY / 2, LIGHTGREY);
+				al_draw_textf(arial32, BLACK, SCREENX / 2, SCREENY / 2 - 90 + 50, ALLEGRO_ALIGN_CENTER, "1024, 768");
+			}
+			// full screen
+			if (mx >= SCREENX / 2 - 100 && my >= SCREENY / 2 && mx <= SCREENX / 2 + 100 && my <= SCREENY / 2 + 50) {
+				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2, SCREENX / 2 + 100, SCREENY / 2 + 50, LIGHTERGREY);
+				al_draw_textf(arial32, LIGHTBLUE, SCREENX / 2, SCREENY / 2 - 90 + 100, ALLEGRO_ALIGN_CENTER, "1280, 800");
+			}
+			else {
+				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2, SCREENX / 2 + 100, SCREENY / 2 + 50, LIGHTERGREY);
+				al_draw_textf(arial32, BLACK, SCREENX / 2, SCREENY / 2 - 90 + 100, ALLEGRO_ALIGN_CENTER, "1280, 800");
+			}
+		}
+		else {
+			if (mx >= SCREENX / 2 - 100 && my >= SCREENY / 2 - 100 && mx <= SCREENX / 2 + 100 && my <= SCREENY / 2 - 50) {
+				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2 - 100, SCREENX / 2 + 100, SCREENY / 2 - 50, WHITE);
+				al_draw_textf(arial32, LIGHTBLUE, SCREENX / 2, SCREENY / 2 - 90, ALLEGRO_ALIGN_CENTER, "select");
+			}
+			else {
+				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2 - 100, SCREENX / 2 + 100, SCREENY / 2 - 50, WHITE);
+				al_draw_textf(arial32, BLACK, SCREENX / 2, SCREENY / 2 - 90, ALLEGRO_ALIGN_CENTER, "select");
+			}
 		}
 		
 		// 3 passer le double buffer à l'écran
@@ -235,10 +278,36 @@ void RunOptions()
 		// souris
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			printf("bouton %d presse dans le sous menu\n", event.mouse.button);
+			// retour
 			if (event.mouse.button == 1 && mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
 				RunMenu();
 				Options = 0; // bt retour
 				Game = 0;
+			}
+			// select
+			if (event.mouse.button == 1 && mx >= SCREENX / 2 - 100 && my >= SCREENY / 2 - 100 && mx <= SCREENX / 2 + 100 && my <= SCREENY / 2 - 50) {
+				if (BSelectDisplay)
+					BSelectDisplay = 0;
+				else
+					BSelectDisplay = 1;
+			}
+			// window
+			if (event.mouse.button == 1 && mx >= SCREENX / 2 - 100 && my >= SCREENY / 2 - 50 && mx <= SCREENX / 2 + 100 && my <= SCREENY / 2) {
+				if (BSelectDisplay) {
+					al_resize_display(display, 1024, 768);
+					SCREENX = al_get_display_width(display);
+					SCREENY = al_get_display_height(display);
+					BSelectDisplay = 0;
+				}
+			}
+			// full screen
+			if (event.mouse.button == 1 && mx >= SCREENX / 2 - 100 && my >= SCREENY / 2 && mx <= SCREENX / 2 + 100 && my <= SCREENY / 2 + 50) {
+				if (BSelectDisplay) {
+					al_resize_display(display, 1280, 800);
+					SCREENX = al_get_display_width(display);
+					SCREENY = al_get_display_height(display);
+					BSelectDisplay = 0;
+				}
 			}
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
@@ -295,6 +364,19 @@ void RunGame()
 	int y = SCREENY / 2;
 	int px = SCREENX / 2; // position du rectangle
 	int py = SCREENY / 2;
+	ALLEGRO_BITMAP* image;        // l'image
+
+	if (!al_init())
+		Error("al_init()");
+
+	//nécessaire pour laod et save bitmap
+	if (!al_init_image_addon())
+		Error("al_init_image_addon()");
+
+	// charger une image dans le programme
+	image = al_load_bitmap("image.bmp");
+	if (!image)
+		Error("al_load_bitmap()");
 
 	while (Game) {
 		// 1 effacer le double buffer
@@ -304,6 +386,9 @@ void RunGame()
 		al_draw_filled_rectangle(0, SCREENY - 250, SCREENX/2, SCREENY-200, GREEN); // platerforme
 		al_draw_filled_rectangle(0, SCREENY, SCREENX/3, SCREENY-200, GREEN); // cube gauche
 		al_draw_filled_rectangle(SCREENX-200, SCREENY, SCREENX, SCREENY-200, GREEN); // cube droit
+		if (im == 1) {
+			al_draw_bitmap(image, 500, 600, 0);
+		}
 		al_draw_filled_rectangle(px, py, px + 20, py + 20, BLUE); // cube
 		if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
 			Button(0, 0, 60, 40, BLACK, arial32, WHITE, "<==");
@@ -323,6 +408,8 @@ void RunGame()
 			printf("%d presse dans boucle jeu\n", event.keyboard.keycode);
 			switch (event.keyboard.keycode) {
 			case ALLEGRO_KEY_F2: Game = 0; break;
+			case ALLEGRO_KEY_F3: im = 0; break;
+			case ALLEGRO_KEY_F4: im = 1; break;
 			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_UP) up = 1;
@@ -443,6 +530,7 @@ void RunGame()
 			exit(EXIT_SUCCESS);
 		}
 	}
+	al_destroy_bitmap(image);
 }
 
 /*******************************************
@@ -467,9 +555,16 @@ void Error(char* txt)
 	exit(EXIT_FAILURE);
 }
 
+void Select(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* font, ALLEGRO_COLOR textcolor, char text[])
+{
+	al_draw_filled_rectangle(x1, y1, x2, y2, color);
+	al_draw_textf(font, textcolor, x1 + (x2 - x1) / 2, y1, ALLEGRO_ALIGN_CENTER, text);
+	al_draw_filled_rectangle(x1, y1+50, x2, y2+50, LIGHTGREY);
+	al_draw_textf(font, textcolor, x1 + (x2 - x1) / 2, y1+50, ALLEGRO_ALIGN_CENTER, text);
+}
+
 void Button(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* font, ALLEGRO_COLOR textcolor, char text[])
 {
-	
 	al_draw_filled_rectangle(x1, y1, x2, y2, color);
 	al_draw_textf(font, textcolor, x1 + (x2 - x1) / 2, y1, ALLEGRO_ALIGN_CENTER, text);
 }

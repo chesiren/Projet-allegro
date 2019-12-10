@@ -1,5 +1,6 @@
 ﻿  menu.c
-C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(92,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
-C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(203,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
-C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(292,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
+C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(93,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
+C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(204,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
+C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(206,23): warning C4101: 'disp_data' : variable locale non référencée
+C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(361,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
   menus.vcxproj -> C:\Users\acoup\Desktop\visualstudio\menus\Debug\menus.exe

@@ -15,6 +15,8 @@
 
 #define BLACK al_map_rgb(0,0,0)
 #define GREY al_map_rgb(50,50,50)
+#define LIGHTGREY al_map_rgb(150,150,150)
+#define LIGHTERGREY al_map_rgb(130,130,130)
 #define WHITE al_map_rgb(255,255,255)
 #define LIGHTBLUE al_map_rgb(0,100,255)
 #define SKY al_map_rgb(50,128,200)
@@ -44,6 +46,7 @@ void DestroyGame(void);
 
 // outils
 void Error(char* txt);
+void Select(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* font, ALLEGRO_COLOR textcolor, char text[]);
 void Button(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* font, ALLEGRO_COLOR textcolor, char text[]);
 void Collision(int *x, int *y);
 
@@ -78,6 +81,9 @@ bool right = 0;
 bool up = 0;
 bool down = 0;
 bool left = 0;
+
+bool im = 1;
+bool BSelectDisplay = 0;
 
 char options[16] = "Options";
 char jouer[16] = "Jouer";
