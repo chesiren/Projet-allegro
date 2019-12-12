@@ -1,5 +1,5 @@
 ﻿  menu.c
-C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(93,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
-C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(204,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
-C:\Users\acoup\Desktop\visualstudio\menus\menus\menu.c(360,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
-  menus.vcxproj -> C:\Users\acoup\Desktop\visualstudio\menus\Debug\menus.exe
+C:\Users\acoup\Documents\GitHub\Projet-allegro\menus\menus\menu.c(93,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
+C:\Users\acoup\Documents\GitHub\Projet-allegro\menus\menus\menu.c(204,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
+C:\Users\acoup\Documents\GitHub\Projet-allegro\menus\menus\menu.c(360,2): warning C4550: l'expression évalue une fonction dans laquelle manque une liste d'arguments
+  menus.vcxproj -> C:\Users\acoup\Documents\GitHub\Projet-allegro\menus\Debug\menus.exe

@@ -363,6 +363,8 @@ void RunGame()
 	int y = SCREENY / 2;
 	int px = SCREENX / 2; // position du rectangle
 	int py = SCREENY / 2;
+	int ex = SCREENX / 2; // position du rectangle
+	int ey = SCREENY / 2;
 	ALLEGRO_BITMAP* background;        // l'image
 
 	background = al_load_bitmap("background.bmp");
@@ -382,10 +384,11 @@ void RunGame()
 		al_draw_filled_rectangle(0, SCREENY, SCREENX/3, SCREENY-200, GREEN); // cube gauche
 		al_draw_filled_rectangle(SCREENX-200, SCREENY, SCREENX, SCREENY-200, GREEN); // cube droit*/
 		al_draw_bitmap(background, 0, 0, 0); // décord
-		if (im == 1) {
+		if (im == 0) {
 			al_draw_bitmap(hitbox, 0, 0, 0);
 		}
 		al_draw_filled_rectangle(px, py, px + 20, py + 20, BLUE); // cube
+		al_draw_filled_rectangle(ex, ey, ex + 20, ey + 20, RED); // cube
 		if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
 			Button(0, 0, 60, 40, BLACK, arial32, WHITE, "<==");
 		}
@@ -470,6 +473,10 @@ void RunGame()
 		}
 		// timer
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
+			ex -= 2;
+			printf("%d", ex);
+			if (ex == 0)
+				ex = 1000;
 			//printf("|");
 			//gravite
 			if (jump == 0)
