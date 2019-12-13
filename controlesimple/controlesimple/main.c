@@ -342,12 +342,9 @@ void InitGame()
 {
 	GROUND = SCREENY - 120;
 	life = 3;
+	star = 3;
 	Death = 0;
 	protect = 2.00;
-	up = 0;
-	right = 0;
-	left = 0;
-	down = 0;
 	jump = 0.00;
 	pulse = 20.00;
 	gravity = -2.00;
@@ -431,19 +428,6 @@ void RunGame()
 			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
 			}
 			printf("%d presse dans boucle jeu\n", event.keyboard.keycode);
-			// old system
-			/*if (event.keyboard.keycode == ALLEGRO_KEY_UP) up = 1;
-			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) right = 1;
-			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) down = 1;
-			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) left = 1;
-			switch (event.keyboard.keycode) {
-			case ALLEGRO_KEY_F2: Game = 0; break;
-			case ALLEGRO_KEY_F3: hitboxdisplay = 0; break;
-			case ALLEGRO_KEY_F4: hitboxdisplay = 1; break;
-			case ALLEGRO_KEY_F5: esheetdisplay = 0; break;
-			case ALLEGRO_KEY_F6: esheetdisplay = 1; break;
-			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
-			}*/
 		}
 		else if (event.type == ALLEGRO_EVENT_KEY_UP) {
 			switch (event.keyboard.keycode)
@@ -466,17 +450,13 @@ void RunGame()
 
 			}
 			printf("%d relache dans boucle jeu\n", event.keyboard.keycode);
-			/*
-			if (event.keyboard.keycode == ALLEGRO_KEY_UP) up = 0;
-			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) right = 0;
-			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) down = 0;
-			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) left = 0;*/
 		}
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
-
+			// spawn/hurt protection
 			if (protect > 0.00)
 				protect -= 0.02;
-			//gravite
+
+			// gravite/jump
 			if (jump == 0)
 			{
 				if (c_down == 0) {
@@ -534,14 +514,14 @@ void RunGame()
 				Options = 0; // bt retour
 				Game = 0;
 			}
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48)) {
+			if (event.mouse.button == 1 && Death == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48)) {
 				x = SCREENXD;
-				y = SCREENYD;
+				y = SCREENYD; // rejouer
 				InitGame();
 			}
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65)) {
+			if (event.mouse.button == 1 && Death == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65)) {
 				Game = 0;
-				Menu = 1;
+				Menu = 1; // menu principal
 			}
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
@@ -590,17 +570,17 @@ void RunGame()
 			if (life >= 6)
 				al_draw_bitmap(heart, 600, 0, 0);
 
-			// clear old enemy pos
+			// clear old enemy hitbox
 			al_set_target_bitmap(esheet);
 			al_clear_to_color(BLACK);
 			al_set_target_backbuffer(al_get_current_display());
 
-			// add new enemy pos
+			// add new enemy hitbox
 			for (int i = 0; i < PERSONNAGEMAX; i++) {
 				AvancePersonnage(personnages[i]);
 				AffichePersonnage(personnages[i]);
 			}
-			// star
+			// add new star hitbox
 			for (int i = 0; i < star; i++) {
 				AvancePersonnage(personnagesy[i]);
 				AffichePersonnage(personnagesy[i]);
@@ -612,6 +592,7 @@ void RunGame()
 			else
 				Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
 
+			// death screen
 			if (Death == 1)
 			{
 				al_draw_filled_rectangle(SCREENX * 0.2, SCREENY*0.3, SCREENX * 0.8, SCREENY*0.7, GREY); // middle
@@ -647,6 +628,7 @@ void DestroyGame()
 {
 	al_destroy_bitmap(hitbox);
 	al_destroy_bitmap(background);
+	al_destroy_bitmap(esheet);
 	al_destroy_timer(timer);
 }
 
@@ -662,21 +644,13 @@ void Error(char* txt)
 	exit(EXIT_FAILURE);
 }
 
-void Select(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* font, ALLEGRO_COLOR textcolor, char text[])
-{
-	al_draw_filled_rectangle(x1, y1, x2, y2, color);
-	al_draw_textf(font, textcolor, x1 + (x2 - x1) / 2, y1, ALLEGRO_ALIGN_CENTER, text);
-	al_draw_filled_rectangle(x1, y1 + 50, x2, y2 + 50, LIGHTGREY);
-	al_draw_textf(font, textcolor, x1 + (x2 - x1) / 2, y1 + 50, ALLEGRO_ALIGN_CENTER, text);
-}
-
 void Button(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* font, ALLEGRO_COLOR textcolor, char text[])
 {
 	al_draw_filled_rectangle(x1, y1, x2, y2, color);
 	al_draw_textf(font, textcolor, x1 + (x2 - x1) / 2, y1, ALLEGRO_ALIGN_CENTER, text);
 }
 
-void Kill(int x, int y)
+void Kill()
 {
 	if (life == 0) {
 		Death = 1;
@@ -684,8 +658,6 @@ void Kill(int x, int y)
 	else if (protect <= 0.00) {
 		life -= 1;
 		protect = 2.00;
-		x = 200;
-		y = 100;
 	}
 }
 
@@ -731,22 +703,22 @@ void Collision(int* x, int* y)
 	//  enemy
 	al_unmap_rgb(color_down, &r, &g, &b);
 	if (r == 200 && g == 0 && b == 0) {
-		Kill(x, y);
+		Kill();
 	}
 
 	al_unmap_rgb(color_up, &r, &g, &b);
 	if (r == 200 && g == 0 && b == 0) {
-		Kill(x, y);
+		Kill();
 	}
 
 	al_unmap_rgb(color_right, &r, &g, &b);
 	if (r == 200 && g == 0 && b == 0) {
-		Kill(x, y);
+		Kill();
 	}
 
 	al_unmap_rgb(color_left, &r, &g, &b);
 	if (r == 200 && g == 0 && b == 0) {
-		Kill(x, y);
+		Kill();
 	}
 
 	//  star
@@ -818,6 +790,7 @@ void AffichePersonnage(Personnage* p)
 
 void AvancePersonnage(Personnage* p)
 {
+	// moove x
 	p->ex += p->edx;
 	if (p->ex < 0) {
 		p->ex = 0;
@@ -828,6 +801,7 @@ void AvancePersonnage(Personnage* p)
 		p->edx = ((float)rand() / RAND_MAX) * -5;
 	}
 
+	// moove y
 	p->ey += p->edy;
 	if (p->ey < 0) {
 		p->ey = 0;

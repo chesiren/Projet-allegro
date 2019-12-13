@@ -1,18 +1,2 @@
 ﻿  main.c
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(734,9): warning C4047: 'fonction' : les niveaux d'indirection de 'int' et de 'int *' sont différents
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(734,9): warning C4024: 'Kill' : types différents pour le paramètre formel et réel 1
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(734,12): warning C4047: 'fonction' : les niveaux d'indirection de 'int' et de 'int *' sont différents
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(734,12): warning C4024: 'Kill' : types différents pour le paramètre formel et réel 2
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(739,9): warning C4047: 'fonction' : les niveaux d'indirection de 'int' et de 'int *' sont différents
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(739,9): warning C4024: 'Kill' : types différents pour le paramètre formel et réel 1
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(739,12): warning C4047: 'fonction' : les niveaux d'indirection de 'int' et de 'int *' sont différents
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(739,12): warning C4024: 'Kill' : types différents pour le paramètre formel et réel 2
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(744,9): warning C4047: 'fonction' : les niveaux d'indirection de 'int' et de 'int *' sont différents
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(744,9): warning C4024: 'Kill' : types différents pour le paramètre formel et réel 1
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(744,12): warning C4047: 'fonction' : les niveaux d'indirection de 'int' et de 'int *' sont différents
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(744,12): warning C4024: 'Kill' : types différents pour le paramètre formel et réel 2
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(749,9): warning C4047: 'fonction' : les niveaux d'indirection de 'int' et de 'int *' sont différents
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(749,9): warning C4024: 'Kill' : types différents pour le paramètre formel et réel 1
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(749,12): warning C4047: 'fonction' : les niveaux d'indirection de 'int' et de 'int *' sont différents
-C:\Users\acoup\Desktop\visualstudio\controlesimple\controlesimple\main.c(749,12): warning C4024: 'Kill' : types différents pour le paramètre formel et réel 2
   controlesimple.vcxproj -> C:\Users\acoup\Desktop\visualstudio\controlesimple\Debug\controlesimple.exe

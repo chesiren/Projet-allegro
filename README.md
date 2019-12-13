@@ -13,3 +13,4 @@
 - [ ] lister les objectifs/objets dans le jeu    
 - [ ] ajouter les succès    
 - [ ] mettre des sons    
+- [ ] trouver une nouvelle image pour les coeur de vie    
