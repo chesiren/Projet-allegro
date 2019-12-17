@@ -235,11 +235,11 @@ void RunOptions()
 			// full screen
 			if (mx >= SCREENX / 2 - 100 && my >= SCREENY / 2 && mx <= SCREENX / 2 + 100 && my <= SCREENY / 2 + 50) {
 				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2, SCREENX / 2 + 100, SCREENY / 2 + 50, LIGHTERGREY);
-				al_draw_textf(arial32, LIGHTBLUE, SCREENX / 2, SCREENY / 2 - 90 + 100, ALLEGRO_ALIGN_CENTER, "1280, 800");
+				al_draw_textf(arial32, LIGHTBLUE, SCREENX / 2, SCREENY / 2 - 90 + 100, ALLEGRO_ALIGN_CENTER, "1600, 1000");
 			}
 			else {
 				al_draw_filled_rectangle(SCREENX / 2 - 100, SCREENY / 2, SCREENX / 2 + 100, SCREENY / 2 + 50, LIGHTERGREY);
-				al_draw_textf(arial32, BLACK, SCREENX / 2, SCREENY / 2 - 90 + 100, ALLEGRO_ALIGN_CENTER, "1280, 800");
+				al_draw_textf(arial32, BLACK, SCREENX / 2, SCREENY / 2 - 90 + 100, ALLEGRO_ALIGN_CENTER, "1600, 1000");
 			}
 		}
 		else {
@@ -295,7 +295,7 @@ void RunOptions()
 			// full screen
 			if (event.mouse.button == 1 && mx >= SCREENX / 2 - 100 && my >= SCREENY / 2 && mx <= SCREENX / 2 + 100 && my <= SCREENY / 2 + 50) {
 				if (BSelectDisplay) {
-					al_resize_display(display, 1280, 800);
+					al_resize_display(display, 1600, 1000);
 					SCREENX = al_get_display_width(display);
 					SCREENY = al_get_display_height(display);
 					BSelectDisplay = 0;
@@ -379,9 +379,17 @@ void RunGame()
 	for (int i = 0; i < 3; i++)
 		personnagesy[i] = CreatePersonnage(YELLOW);
 
-	background = al_load_bitmap("background.bmp");
-	if (!background)
-		Error("al_load_background()");
+	//Couches backgrounds
+	background0 = al_load_bitmap("BG_Decor.png");
+	if (!background0)
+		Error("al_load_background0()");
+	background1 = al_load_bitmap("Middle_Decor.png");
+	if (!background1)
+		Error("al_load_background1()");
+	background2 = al_load_bitmap("ground + fore.png");
+	if (!background2)
+		Error("al_load_background2()");
+
 	hitbox = al_load_bitmap("hitbox.bmp");
 	if (!hitbox)
 		Error("al_load_hitbox()");
@@ -485,7 +493,11 @@ void RunGame()
 			// controles
 			if (key[KEY_RIGHT] == 1) {
 				if (c_right == 0)
-					x += 10;
+					//x += 10;
+					dx0 += 2;
+				    dx1 += 5;
+					dx2 += 10;
+					dxe -= 10;
 			}
 			if (key[KEY_UP] == 1) {
 				if (c_down == 1 && c_up == 0) {
@@ -495,7 +507,11 @@ void RunGame()
 			}
 			if (key[KEY_LEFT] == 1) {
 				if (c_left == 0)
-					x -= 10;
+					//x -= 10;
+				    dx0 -= 2;
+					dx1 -= 5;
+					dx2 -= 10;
+					dxe += 10;
 			}
 			if (key[KEY_DOWN] == 1) {
 				if (c_down == 0)
@@ -546,7 +562,11 @@ void RunGame()
 
 			// 2 draw
 			// background
-			al_draw_bitmap(background, 0, 0, 0);
+			al_draw_scaled_bitmap(background0, dx0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(background1, dx1, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(background2, dx2, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+	
+
 
 			// should display hitbox sheet?
 			if (hitboxdisplay == 1)
@@ -554,7 +574,7 @@ void RunGame()
 
 			// should display enemy sheet?
 			if (esheetdisplay == 1)
-				al_draw_bitmap(esheet, 0, 0, 0);
+				al_draw_bitmap(esheet, dxe, 0, 0);
 
 			// should display hearts?
 			if (life >= 1)
@@ -627,7 +647,9 @@ void RunGame()
 void DestroyGame()
 {
 	al_destroy_bitmap(hitbox);
-	al_destroy_bitmap(background);
+	al_destroy_bitmap(background0);
+	al_destroy_bitmap(background1);
+	al_destroy_bitmap(background2);
 	al_destroy_bitmap(esheet);
 	al_destroy_timer(timer);
 }
@@ -695,10 +717,10 @@ void Collision(int* x, int* y)
 		c_left = 1;
 	}
 
-	color_down = al_get_pixel(esheet, *x + 10, *y + 21);
-	color_up = al_get_pixel(esheet, *x + 10, *y - 15);
-	color_right = al_get_pixel(esheet, *x + 21, *y + 10);
-	color_left = al_get_pixel(esheet, *x - 1, *y + 10);
+	color_down = al_get_pixel(esheet, *x + 10+dxe, *y + 21);
+	color_up = al_get_pixel(esheet, *x + 10+dxe, *y - 15);
+	color_right = al_get_pixel(esheet, *x + 21+dxe, *y + 10);
+	color_left = al_get_pixel(esheet, *x - 1+dxe, *y + 10);
 
 	//  enemy
 	al_unmap_rgb(color_down, &r, &g, &b);
@@ -785,7 +807,7 @@ void AffichePersonnage(Personnage* p)
 	al_draw_filled_rectangle(p->ex, p->ey, p->ex + 20, p->ey + 20, p->color);
 	al_set_target_backbuffer(al_get_current_display());
 	// draw enemy on background
-	al_draw_bitmap(p->im, p->ex, p->ey, 0);
+	al_draw_bitmap(p->im, p->ex+dxe, p->ey, 0);
 }
 
 void AvancePersonnage(Personnage* p)

@@ -65,7 +65,9 @@ ALLEGRO_FONT* arial32;
 
 // bitmap
 ALLEGRO_BITMAP* hitbox;
-ALLEGRO_BITMAP* background;
+ALLEGRO_BITMAP* background0;
+ALLEGRO_BITMAP* background1;
+ALLEGRO_BITMAP* background2;
 ALLEGRO_BITMAP* esheet;
 ALLEGRO_BITMAP* heart;
 
@@ -77,6 +79,7 @@ int GROUND;
 int mx, my, x, y;
 int life;
 int star;
+int dx0=0, dx1=0, dx2=0, dxhb=0, dxe=0; // Coordonnées des backgrounds
 
 float jump;
 float pulse;
