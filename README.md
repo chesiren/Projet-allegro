@@ -5,7 +5,8 @@
 - [ ] améliorer l'écran de mort    
 - [ ] ajouter un menu pause quand on appuie sur echap    
 - [ ] améliorer/ajouter plus d'options (langues, résolution, touches)     
-- [ ] changer l'image de fond     
+- [x] fix la résolution dans le menu      
+- [x] changer l'image de fond     
 - [ ] faire les animations du personnage    
 - [ ] faire plusieures ia ennemies différentes (voir alliées)    
 - [ ] faire une liste des références pour chaque image utilisée      

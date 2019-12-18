@@ -82,6 +82,7 @@ int mx, my, x, y;
 int life;
 int star;
 int dx0=0, dx1=0, dx2=0, dxhb=0, dxe=0; // Coordonnées des backgrounds
+int fontsize;
 
 float jump;
 float pulse;
@@ -109,6 +110,7 @@ char quitter[16] = "Quitter";
 char lang[16] = "Langage";
 char rejouer[16] = "Rejouer";
 char menu_p[16] = "Menu principal";
+char select[16] = "Selectionner";
 
 typedef struct Personnage {
 	float ex, ey;				//position
