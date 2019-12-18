@@ -362,8 +362,8 @@ void RunGame()
 	printf("========arrivee dans jeu\n");
 	al_flush_event_queue(queue);
 	Game = 1;
-	int x = SCREENX / 2; // position du rectangle
-	int y = SCREENY / 2;
+	int x = SCREENX / 2+50; // position du rectangle
+	int y = SCREENY / 2+50;
 	int px = SCREENX / 2; // position du rectangle
 	int py = SCREENY / 2;
 	int debug = 0;
@@ -389,14 +389,17 @@ void RunGame()
 	background2 = al_load_bitmap("ground + fore.png");
 	if (!background2)
 		Error("al_load_background2()");
+	background3 = al_load_bitmap("platform.png");
+	if (!background3)
+		Error("al_load_background3()");
 
-	hitbox = al_load_bitmap("hitbox.bmp");
+	hitbox = al_load_bitmap("platformhitbox.png");
 	if (!hitbox)
 		Error("al_load_hitbox()");
 	esheet = al_load_bitmap("esheet.bmp");
 	if (!esheet)
 		Error("al_load_esheet()");
-	heart = al_load_bitmap("heart.bmp");
+	heart = al_load_bitmap("heart.png");
 	if (!heart)
 		Error("al_load_heart()");
 
@@ -429,10 +432,8 @@ void RunGame()
 				break;
 
 			case ALLEGRO_KEY_F2: Game = 0; break;
-			case ALLEGRO_KEY_F3: hitboxdisplay = 0; break;
-			case ALLEGRO_KEY_F4: hitboxdisplay = 1; break;
-			case ALLEGRO_KEY_F5: esheetdisplay = 0; break;
-			case ALLEGRO_KEY_F6: esheetdisplay = 1; break;
+			case ALLEGRO_KEY_F3: if (hitboxdisplay == 1) hitboxdisplay = 0; else hitboxdisplay = 1; break;
+			case ALLEGRO_KEY_F4: if (esheetdisplay == 1) esheetdisplay = 0; else esheetdisplay = 1; break;
 			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
 			}
 			printf("%d presse dans boucle jeu\n", event.keyboard.keycode);
@@ -470,8 +471,8 @@ void RunGame()
 				if (c_down == 0) {
 					y -= gravity;
 					gravity -= 0.2;
-					if (y > GROUND)
-						y = GROUND;
+					if (y > SCREENY-80)
+						y = SCREENY-80;
 				}
 			}
 			else if (jump > 0)
@@ -491,36 +492,32 @@ void RunGame()
 			}
 
 			// controles
-			if (key[KEY_RIGHT] == 1) {
-				if (c_right == 0)
+			if (Death == 0) {
+				if (key[KEY_RIGHT] == 1 && c_right == 0) {
 					//x += 10;
 					dx0 += 2;
-				    dx1 += 5;
+					dx1 += 5;
 					dx2 += 10;
 					dxe -= 10;
-			}
-			if (key[KEY_UP] == 1) {
-				if (c_down == 1 && c_up == 0) {
+				}
+				if (key[KEY_UP] == 1 && c_down == 1 && c_up == 0) {
 					jump = 1.00;
 					pulse = 10.00;
 				}
-			}
-			if (key[KEY_LEFT] == 1) {
-				if (c_left == 0)
+				if (key[KEY_LEFT] == 1 && c_left == 0) {
 					//x -= 10;
-				    dx0 -= 2;
+					dx0 -= 2;
 					dx1 -= 5;
 					dx2 -= 10;
 					dxe += 10;
-			}
-			if (key[KEY_DOWN] == 1) {
-				if (c_down == 0)
+				}
+				if (key[KEY_DOWN] == 1 && c_down == 0) {
 					y += 10;
+				}
 			}
 			Collision(&x, &y);
 			px = x;
 			py = y;
-
 			debug = 1;
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
@@ -565,30 +562,31 @@ void RunGame()
 			al_draw_scaled_bitmap(background0, dx0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 			al_draw_scaled_bitmap(background1, dx1, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 			al_draw_scaled_bitmap(background2, dx2, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(background3, dx2, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 	
 
 
 			// should display hitbox sheet?
 			if (hitboxdisplay == 1)
-				al_draw_bitmap(hitbox, 0, 0, 0);
+				al_draw_scaled_bitmap(hitbox, dx2, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 
 			// should display enemy sheet?
 			if (esheetdisplay == 1)
-				al_draw_bitmap(esheet, dxe, 0, 0);
+				al_draw_scaled_bitmap(esheet, dx2, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 
 			// should display hearts?
 			if (life >= 1)
 				al_draw_bitmap(heart, 100, 0, 0);
 			if (life >= 2)
-				al_draw_bitmap(heart, 200, 0, 0);
+				al_draw_bitmap(heart, 150, 0, 0);
 			if (life >= 3)
-				al_draw_bitmap(heart, 300, 0, 0);
+				al_draw_bitmap(heart, 200, 0, 0);
 			if (life >= 4)
-				al_draw_bitmap(heart, 400, 0, 0);
+				al_draw_bitmap(heart, 250, 0, 0);
 			if (life >= 5)
-				al_draw_bitmap(heart, 500, 0, 0);
+				al_draw_bitmap(heart, 300, 0, 0);
 			if (life >= 6)
-				al_draw_bitmap(heart, 600, 0, 0);
+				al_draw_bitmap(heart, 350, 0, 0);
 
 			// clear old enemy hitbox
 			al_set_target_bitmap(esheet);
@@ -685,10 +683,10 @@ void Kill()
 
 void Collision(int* x, int* y)
 {
-	ALLEGRO_COLOR color_down = al_get_pixel(hitbox, *x + 10, *y + 21);
-	ALLEGRO_COLOR color_up = al_get_pixel(hitbox, *x + 10, *y - 15);
-	ALLEGRO_COLOR color_right = al_get_pixel(hitbox, *x + 21, *y + 10);
-	ALLEGRO_COLOR color_left = al_get_pixel(hitbox, *x - 1, *y + 10);
+	ALLEGRO_COLOR color_down = al_get_pixel(hitbox, *x + 10+dx2, *y + 21);
+	ALLEGRO_COLOR color_up = al_get_pixel(hitbox, *x + 10+dx2, *y - 15);
+	ALLEGRO_COLOR color_right = al_get_pixel(hitbox, *x + 21+dx2, *y + 10);
+	ALLEGRO_COLOR color_left = al_get_pixel(hitbox, *x - 1+dx2, *y + 10);
 
 	unsigned char r, g, b;
 
@@ -698,6 +696,7 @@ void Collision(int* x, int* y)
 	if (r == 0 && g == 128 && b == 0) {
 		c_down = 1;
 	}
+	printf("%d,%d,%d\n", r, g, b);
 
 	al_unmap_rgb(color_up, &r, &g, &b);
 	c_up = 0;
@@ -717,10 +716,10 @@ void Collision(int* x, int* y)
 		c_left = 1;
 	}
 
-	color_down = al_get_pixel(esheet, *x + 10+dxe, *y + 21);
-	color_up = al_get_pixel(esheet, *x + 10+dxe, *y - 15);
-	color_right = al_get_pixel(esheet, *x + 21+dxe, *y + 10);
-	color_left = al_get_pixel(esheet, *x - 1+dxe, *y + 10);
+	color_down = al_get_pixel(esheet, *x + 10, *y + 21);
+	color_up = al_get_pixel(esheet, *x + 10, *y - 15);
+	color_right = al_get_pixel(esheet, *x + 21, *y + 10);
+	color_left = al_get_pixel(esheet, *x - 1, *y + 10);
 
 	//  enemy
 	al_unmap_rgb(color_down, &r, &g, &b);
@@ -804,10 +803,10 @@ void AffichePersonnage(Personnage* p)
 {
 	// draw enemy on enemy sheet
 	al_set_target_bitmap(esheet);
-	al_draw_filled_rectangle(p->ex, p->ey, p->ex + 20, p->ey + 20, p->color);
+	al_draw_filled_rectangle(p->ex-dx2, p->ey, p->ex + 20-dx2, p->ey + 20, p->color);
 	al_set_target_backbuffer(al_get_current_display());
 	// draw enemy on background
-	al_draw_bitmap(p->im, p->ex+dxe, p->ey, 0);
+	al_draw_bitmap(p->im, p->ex-dx2, p->ey, 0);
 }
 
 void AvancePersonnage(Personnage* p)

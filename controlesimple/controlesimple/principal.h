@@ -22,10 +22,11 @@
 #define SKY al_map_rgb(50,128,200)
 #define BLUE al_map_rgb(0,0,255)
 #define CUBE al_map_rgb(0,0,255)
-#define CUBEHIT al_map_rgb(100,0,200)
+#define CUBEHIT al_map_rgb(100,0,150)
 #define PURPLE al_map_rgb(128,0,255)
 #define GREEN al_map_rgb(0,128,0)
 #define RED al_map_rgb(200,0,0)
+#define ORANGE al_map_rgb(200,100,0)
 #define YELLOW al_map_rgb(255,200,0)
 
 #define PERSONNAGEMAX	10
@@ -64,12 +65,13 @@ ALLEGRO_FONT* arial72;
 ALLEGRO_FONT* arial32;
 
 // bitmap
-ALLEGRO_BITMAP* hitbox;
 ALLEGRO_BITMAP* background0;
 ALLEGRO_BITMAP* background1;
 ALLEGRO_BITMAP* background2;
+ALLEGRO_BITMAP* background3;
 ALLEGRO_BITMAP* esheet;
 ALLEGRO_BITMAP* heart;
+ALLEGRO_BITMAP* hitbox;
 
 int SCREENX;
 int SCREENY;
