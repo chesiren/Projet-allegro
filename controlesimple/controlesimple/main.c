@@ -88,6 +88,17 @@ void RunMenu()
 	al_flush_event_queue(queue);
 	Menu = 1;
 
+	//Couches backgrounds
+	background0 = al_load_bitmap("BG_Decor.png");
+	if (!background0)
+		Error("al_load_background0()");
+	background1 = al_load_bitmap("Middle_Decor.png");
+	if (!background1)
+		Error("al_load_background1()");
+	background2 = al_load_bitmap("ground + fore.png");
+	if (!background2)
+		Error("al_load_background2()");
+
 	while (Menu) {
 
 		int x = SCREENXD;
@@ -95,7 +106,10 @@ void RunMenu()
 		// 1 effacer le double buffer
 		al_clear_to_color(SKY);
 		// 2 le rectangle à sa position x,y dans le double buffer
-		al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN);
+		//al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN);
+		al_draw_scaled_bitmap(background0, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+		al_draw_scaled_bitmap(background1, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+		al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 
 		if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.38))
 			Button(SCREENX * 0.25, SCREENY * 0.25, SCREENX * 0.75, SCREENY * 0.38, BLACK, arial72, WHITE, options);
@@ -195,14 +209,30 @@ void RunOptions()
 	al_flush_event_queue(queue);
 	Options = 1;
 
+	//Couches backgrounds
+	background0 = al_load_bitmap("BG_Decor.png");
+	if (!background0)
+		Error("al_load_background0()");
+	background1 = al_load_bitmap("Middle_Decor.png");
+	if (!background1)
+		Error("al_load_background1()");
+	background2 = al_load_bitmap("ground + fore.png");
+	if (!background2)
+		Error("al_load_background2()");
+
+
 	while (Options) {
 		int x = SCREENXD;
 		int y = SCREENYD;
 		// 1 effacer le double buffer
 		al_clear_to_color(SKY);
 		// 2 rectangles
-		al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN); // sol vert
+		//al_draw_filled_rectangle(0, SCREENY - 100, SCREENX, SCREENY, GREEN); // sol vert
+		al_draw_scaled_bitmap(background0, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+		al_draw_scaled_bitmap(background1, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+		al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 		al_draw_filled_rectangle(SCREENX * 0.2, 0, SCREENX * 0.8, SCREENY, GREY); // middle
+
 		if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
 			Button(0, 0, 60, 40, BLACK, arial32, WHITE, "<==");
 		}
