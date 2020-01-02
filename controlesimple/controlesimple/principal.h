@@ -56,6 +56,7 @@ void Error(char* txt);
 void Button(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, ALLEGRO_FONT* font, ALLEGRO_COLOR textcolor, char text[]);
 void Collision(int* x, int* y);
 void Kill(void);
+char getlang(int txt);
 
 // globales
 ALLEGRO_DISPLAY* display;
@@ -83,6 +84,7 @@ int life;
 int star;
 int dx0=0, dx1=0, dx2=0, dxhb=0, dxe=0; // Coordonnées des backgrounds
 int fontsize;
+int language = 0;
 
 float jump;
 float pulse;
@@ -103,14 +105,28 @@ bool Death = 0;
 bool hitboxdisplay = 0;
 bool esheetdisplay = 0;
 bool BSelectDisplay = 0;
+bool BSelectDisplay2 = 0;
 
-char options[16] = "Options";
-char jouer[16] = "Jouer";
-char quitter[16] = "Quitter";
-char lang[16] = "Langage";
-char rejouer[16] = "Rejouer";
-char menu_p[16] = "Menu principal";
-char select[16] = "Selectionner";
+
+
+char options[2][16] = { "Options", "Parameters" };
+char jouer[2][16] = { "Jouer", "Play" };
+char quitter[2][16] = { "Quitter", "Leave" };
+char lang[2][16] = { "Langage", "Language" };
+char rejouer[2][16] = { "Rejouer", "Play again" };
+char menu_p[2][16] = { "Menu principal", "Main menu" };
+char resolution[2][16] = { "Resolution", "Screen size" };
+
+
+
+
+char options2[16] = "Parameters";
+char jouer2[16] = "Play";
+char quitter2[16] = "Leave";
+char lang2[16] = "Language";
+char rejouer2[16] = "Play again";
+char menu_p2[16] = "Main menu";
+char resolution2[16] = "Screen size";
 
 typedef struct Personnage {
 	float ex, ey;				//position

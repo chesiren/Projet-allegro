@@ -112,19 +112,19 @@ void RunMenu()
 		al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 
 		if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.38))
-			Button(SCREENX * 0.25, SCREENY * 0.25, SCREENX * 0.75, SCREENY * 0.38, BLACK, arial72, WHITE, options);
+			Button(SCREENX * 0.25, SCREENY * 0.25, SCREENX * 0.75, SCREENY * 0.38, BLACK, arial72, WHITE, options[language]);
 		else
-			Button(SCREENX * 0.25, SCREENY * 0.25, SCREENX * 0.75, SCREENY * 0.38, PURPLE, arial72, WHITE, options);
+			Button(SCREENX * 0.25, SCREENY * 0.25, SCREENX * 0.75, SCREENY * 0.38, PURPLE, arial72, WHITE, options[language]);
 
 		if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.42) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.55))
-			Button(SCREENX * 0.25, SCREENY * 0.42, SCREENX * 0.75, SCREENY * 0.55, BLACK, arial72, WHITE, jouer);
+			Button(SCREENX * 0.25, SCREENY * 0.42, SCREENX * 0.75, SCREENY * 0.55, BLACK, arial72, WHITE, jouer[language]);
 		else
-			Button(SCREENX * 0.25, SCREENY * 0.42, SCREENX * 0.75, SCREENY * 0.55, BLUE, arial72, WHITE, jouer);
+			Button(SCREENX * 0.25, SCREENY * 0.42, SCREENX * 0.75, SCREENY * 0.55, BLUE, arial72, WHITE, jouer[language]);
 
 		if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.59) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.72))
-			Button(SCREENX * 0.25, SCREENY * 0.59, SCREENX * 0.75, SCREENY * 0.72, BLACK, arial72, WHITE, quitter);
+			Button(SCREENX * 0.25, SCREENY * 0.59, SCREENX * 0.75, SCREENY * 0.72, BLACK, arial72, WHITE, quitter[language]);
 		else
-			Button(SCREENX * 0.25, SCREENY * 0.59, SCREENX * 0.75, SCREENY * 0.72, LIGHTBLUE, arial72, WHITE, quitter);
+			Button(SCREENX * 0.25, SCREENY * 0.59, SCREENX * 0.75, SCREENY * 0.72, LIGHTBLUE, arial72, WHITE, quitter[language]);
 
 		// 3 passer le double buffer à l'écran
 		al_flip_display();
@@ -241,32 +241,56 @@ void RunOptions()
 		}
 
 		if (BSelectDisplay == 1) {
-			// select
-			if (mx >= (SCREENX * 0.40) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.60) && my <= (SCREENY * 0.35))
-				Button(SCREENX * 0.40, SCREENY * 0.25, SCREENX * 0.60, SCREENY * 0.35, BLACK, arial32, WHITE, select);
+			// resolution
+			if (mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.35))
+				Button(SCREENX * 0.26, SCREENY * 0.25, SCREENX * 0.47, SCREENY * 0.35, BLACK, arial32, WHITE, resolution[language]);
 			else
-				Button(SCREENX * 0.40, SCREENY * 0.25, SCREENX * 0.60, SCREENY * 0.35, WHITE, arial32, BLACK, select);
+				Button(SCREENX * 0.26, SCREENY * 0.25, SCREENX * 0.47, SCREENY * 0.35, WHITE, arial32, BLACK, resolution[language]);
 			// 1024x768
-			if (mx >= (SCREENX * 0.40) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.60) && my <= (SCREENY * 0.45))
-				Button(SCREENX * 0.40, SCREENY * 0.35, SCREENX * 0.60, SCREENY * 0.45, LIGHTERGREY, arial32, LIGHTBLUE, "1024x768");
+			if (mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.45))
+				Button(SCREENX * 0.26, SCREENY * 0.35, SCREENX * 0.47, SCREENY * 0.45, LIGHTERGREY, arial32, LIGHTBLUE, "1024x768");
 			else
-				Button(SCREENX * 0.40, SCREENY * 0.35, SCREENX * 0.60, SCREENY * 0.45, LIGHTERGREY, arial32, BLACK, "1024x768");
+				Button(SCREENX * 0.26, SCREENY * 0.35, SCREENX * 0.47, SCREENY * 0.45, LIGHTERGREY, arial32, BLACK, "1024x768");
 			// 1600x1000
-			if (mx >= (SCREENX * 0.40) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.60) && my <= (SCREENY * 0.55))
-				Button(SCREENX * 0.40, SCREENY * 0.45, SCREENX * 0.60, SCREENY * 0.55, LIGHTGREY, arial32, LIGHTBLUE, "1600x1000");
+			if (mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.55))
+				Button(SCREENX * 0.26, SCREENY * 0.45, SCREENX * 0.47, SCREENY * 0.55, LIGHTGREY, arial32, LIGHTBLUE, "1600x1000");
 			else
-				Button(SCREENX * 0.40, SCREENY * 0.45, SCREENX * 0.60, SCREENY * 0.55, LIGHTGREY, arial32, BLACK, "1600x1000");
+				Button(SCREENX * 0.26, SCREENY * 0.45, SCREENX * 0.47, SCREENY * 0.55, LIGHTGREY, arial32, BLACK, "1600x1000");
 			// fullscreen 1920x1080
-			if (mx >= (SCREENX * 0.40) && my >= (SCREENY * 0.55) && mx <= (SCREENX * 0.60) && my <= (SCREENY * 0.65))
-				Button(SCREENX * 0.40, SCREENY * 0.55, SCREENX * 0.60, SCREENY * 0.65, LIGHTERGREY, arial32, LIGHTBLUE, "1920x1080");
+			if (mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.55) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.65))
+				Button(SCREENX * 0.26, SCREENY * 0.55, SCREENX * 0.47, SCREENY * 0.65, LIGHTERGREY, arial32, LIGHTBLUE, "1920x1080");
 			else
-				Button(SCREENX * 0.40, SCREENY * 0.55, SCREENX * 0.60, SCREENY * 0.65, LIGHTERGREY, arial32, BLACK, "1920x1080");
+				Button(SCREENX * 0.26, SCREENY * 0.55, SCREENX * 0.47, SCREENY * 0.65, LIGHTERGREY, arial32, BLACK, "1920x1080");
 		}
 		else {
-			if (mx >= (SCREENX * 0.40) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.60) && my <= (SCREENY * 0.35))
-				Button(SCREENX * 0.40, SCREENY * 0.25, SCREENX * 0.60, SCREENY * 0.35, BLACK, arial32, WHITE, select);
+			if (mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.35))
+				Button(SCREENX * 0.26, SCREENY * 0.25, SCREENX * 0.47, SCREENY * 0.35, BLACK, arial32, WHITE, resolution[language]);
 			else
-				Button(SCREENX * 0.40, SCREENY * 0.25, SCREENX * 0.60, SCREENY * 0.35, WHITE, arial32, BLACK, select);
+				Button(SCREENX * 0.26, SCREENY * 0.25, SCREENX * 0.47, SCREENY * 0.35, WHITE, arial32, BLACK, resolution[language]);
+		}
+
+		if (BSelectDisplay2 == 1) {
+			// langue
+			if (mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.35))
+				Button(SCREENX * 0.53, SCREENY * 0.25, SCREENX * 0.74, SCREENY * 0.35, BLACK, arial32, WHITE, lang[language]);
+			else
+				Button(SCREENX * 0.53, SCREENY * 0.25, SCREENX * 0.74, SCREENY * 0.35, WHITE, arial32, BLACK, lang[language]);
+			// francais
+			if (mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.45))
+				Button(SCREENX * 0.53, SCREENY * 0.35, SCREENX * 0.74, SCREENY * 0.45, LIGHTERGREY, arial32, LIGHTBLUE, "Francais");
+			else
+				Button(SCREENX * 0.53, SCREENY * 0.35, SCREENX * 0.74, SCREENY * 0.45, LIGHTERGREY, arial32, BLACK, "Francais");
+			// anglais
+			if (mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.55))
+				Button(SCREENX * 0.53, SCREENY * 0.45, SCREENX * 0.74, SCREENY * 0.55, LIGHTGREY, arial32, LIGHTBLUE, "English");
+			else
+				Button(SCREENX * 0.53, SCREENY * 0.45, SCREENX * 0.74, SCREENY * 0.55, LIGHTGREY, arial32, BLACK, "English");
+		}
+		else {
+			if (mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.35))
+				Button(SCREENX * 0.53, SCREENY * 0.25, SCREENX * 0.74, SCREENY * 0.35, BLACK, arial32, WHITE, lang[language]);
+			else
+				Button(SCREENX * 0.53, SCREENY * 0.25, SCREENX * 0.74, SCREENY * 0.35, WHITE, arial32, BLACK, lang[language]);
 		}
 
 		// 3 passer le double buffer à l'écran
@@ -292,15 +316,18 @@ void RunOptions()
 				Options = 0; // bt retour
 				Game = 0;
 			}
-			// select
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.40) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.60) && my <= (SCREENY * 0.35)) {
-				if (BSelectDisplay)
+			// resolution
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.35)) {
+				if (BSelectDisplay) {
 					BSelectDisplay = 0;
-				else
+				}
+				else {
 					BSelectDisplay = 1;
+					BSelectDisplay2 = 0;
+				}
 			}
 			// 1024x768
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.40) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.60) && my <= (SCREENY * 0.45)) {
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.45)) {
 				if (BSelectDisplay) {
 					al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, 0);
 					al_resize_display(display, 1024, 768);
@@ -310,7 +337,7 @@ void RunOptions()
 				}
 			}
 			// 1600x1000
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.40) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.60) && my <= (SCREENY * 0.55)) {
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.55)) {
 				if (BSelectDisplay) {
 					al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, 0);
 					al_resize_display(display, 1600, 1000);
@@ -320,13 +347,38 @@ void RunOptions()
 				}
 			}
 			// 1920x1080
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.40) && my >= (SCREENY * 0.55) && mx <= (SCREENX * 0.60) && my <= (SCREENY * 0.65)) {
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.55) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.65)) {
 				if (BSelectDisplay) {
 					al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, 1);
 					al_resize_display(display, 1920, 1080);					
 					SCREENX = al_get_display_width(display);
 					SCREENY = al_get_display_height(display); 
 					BSelectDisplay = 0;
+				}
+			}
+
+			// langue
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.35)) {
+				if (BSelectDisplay2) {
+					BSelectDisplay2 = 0;
+				}
+				else {
+					BSelectDisplay2 = 1;
+					BSelectDisplay = 0;
+				}
+			}
+			// francais
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.45)) {
+				if (BSelectDisplay2) {
+					language = 0;
+					BSelectDisplay2 = 0;
+				}
+			}
+			// anglais
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.55)) {
+				if (BSelectDisplay2) {
+					language = 1;
+					BSelectDisplay2 = 0;
 				}
 			}
 		}
@@ -356,6 +408,9 @@ void RunOptions()
 /*******************************************
 	SOUS-MENU / DESTRUCTION
 *******************************************/
+
+
+
 
 void DestroyOptions()
 {
@@ -647,15 +702,15 @@ void RunGame()
 			{
 				al_draw_filled_rectangle(SCREENX * 0.2, SCREENY*0.3, SCREENX * 0.8, SCREENY*0.7, GREY); // middle
 				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48))
-					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLACK, arial72, WHITE, rejouer);
+					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLACK, arial72, WHITE, rejouer[language]);
 				else
-					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLUE, arial72, WHITE, rejouer);
+					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLUE, arial72, WHITE, rejouer[language]);
 
 
 				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65))
-					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, BLACK, arial72, WHITE, menu_p);
+					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, BLACK, arial72, WHITE, menu_p[language]);
 				else
-					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, LIGHTBLUE, arial72, WHITE, menu_p);
+					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, LIGHTBLUE, arial72, WHITE, menu_p[language]);
 			}
 			else {
 				// cube
@@ -807,8 +862,9 @@ void Collision(int* x, int* y)
 Personnage* CreatePersonnage(ALLEGRO_COLOR color)
 {
 	Personnage* p = (Personnage*)malloc(sizeof(Personnage));
-	p->ex = rand() % SCREENX;
 	p->ey = rand() % SCREENY;
+	p->ex = rand() % SCREENX;
+	
 	p->edx = (float)rand() / RAND_MAX * 50 - 25;
 	p->edy = (float)rand() / RAND_MAX * 50 - 25;
 
