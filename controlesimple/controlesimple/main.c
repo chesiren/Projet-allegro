@@ -12,7 +12,7 @@ int main()
 }
 
 /*******************************************
-	PRINCIPAL / INITIALISATION
+	INITIALISATION
 *******************************************/
 
 void Initialisation()
@@ -34,12 +34,16 @@ void Initialisation()
 		Error("al_init_image_addon()");
 
 	// Récupération de la police voulue
-	arial72 = al_load_font("arial.ttf", 72, 0);
-	if (!arial72)
-		Error("al_load_font(\"arial.ttf\", 72, 0)");
+	arial22 = al_load_font("arial.ttf", 22, 0);
+	if (!arial22)
+		Error("al_load_font(\"arial.ttf\", 22, 0)");
 
 	arial32 = al_load_font("arial.ttf", 32, 0);
 	if (!arial32)
+		Error("al_load_font(\"arial.ttf\", 72, 0)");
+
+	arial72 = al_load_font("arial.ttf", 72, 0);
+	if (!arial72)
 		Error("al_load_font(\"arial.ttf\", 72, 0)");
 
 	// Création fenêtre
@@ -82,15 +86,19 @@ void Initialisation()
 	if (!background3)
 		Error("al_load_background3()");
 
+	vignette1 = al_load_bitmap("vignette1.png");
+	if (!vignette1)
+		Error("al_load_vignette1()");
+
 	hitbox = al_load_bitmap("platformhitbox.png");
 	if (!hitbox)
 		Error("al_load_hitbox()");
 	esheet = al_load_bitmap("esheet.bmp");
 	if (!esheet)
 		Error("al_load_esheet()");
-	heart = al_load_bitmap("heart.png");
-	if (!heart)
-		Error("al_load_heart()");
+	or = al_load_bitmap("or.png");
+	if (!or)
+		Error("al_load_or()");
 
 	// Initialisation variables
 	SCREENX = al_get_display_width(display);
@@ -102,7 +110,7 @@ void Initialisation()
 }
 
 /*******************************************
-	PRINCIPAL / BOUCLE
+	MENU / BOUCLE
 *******************************************/
 
 void RunMenu()
@@ -120,32 +128,50 @@ void RunMenu()
 
 		// Evenement clavier
 		if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
-			printf("touche presse dans boucle principale\n");
+			printf("touche presse dans boucle principale\n"); // debug
 			switch (event.keyboard.keycode) {
 			case ALLEGRO_KEY_F1: RunOptions(); break;
-			case ALLEGRO_KEY_F2: RunGame();  break;
+			case ALLEGRO_KEY_F2: RunGame(0);  break;
 			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
 			}
 		}
 		// Evenement souris appuit
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-			printf("bouton %d presse dans la boucle principale\n", event.mouse.button);
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.38)) {
-				Menu = 0;
-				RunOptions(); // options
-				Game = 0;
+			printf("bouton %d presse dans la boucle principale\n", event.mouse.button); // debug
+			if (SousMenu) {
+				// Bouton retour
+				if (event.mouse.button == 1 && mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
+					SousMenu = 0;
+				}
+				// Bouton campagne
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48)) {
+					RunMenuCampagne();
+				}
+				// Bouton bac à sable
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65)) {
+					RunMenuSandbox();
+				}
 			}
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.42) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.55)) {
-				Menu = 0;
-				Options = 0; // jouer
-				RunGame();
+			else {
+				// Bouton options
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.38)) {
+					Menu = 0;
+					RunOptions();
+					Game = 0;
+				}
+				// Bouton jouer
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.42) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.55)) {
+					SousMenu = 1;
+					Options = 0;
+				}
+				// Bouton quitter
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.59) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.72))
+					exit(EXIT_SUCCESS);
 			}
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.59) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.72))
-				exit(EXIT_SUCCESS);
 		}
 		// Evenement souris relâche
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-			printf("bouton %d relache dans la boucle principale\n", event.mouse.button);
+			printf("bouton %d relache dans la boucle principale\n", event.mouse.button); // debug
 		}
 		// Evenement souris bougé
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
@@ -174,21 +200,339 @@ void RunMenu()
 			al_draw_scaled_bitmap(background1, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 			al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 
-			// Bouton options
-			if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.38))
-				Button(SCREENX * 0.25, SCREENY * 0.25, SCREENX * 0.75, SCREENY * 0.38, BLACK, arial72, WHITE, options[language]);
+			
+			if (SousMenu) {
+				// Bouton retour
+				if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40)
+					Button(0, 0, 60, 40, BLACK, arial32, WHITE, "<==");
+				else
+					Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
+				// Bouton campagne
+				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48))
+					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLACK, arial72, WHITE, campagne[language]);
+				else
+					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLUE, arial72, WHITE, campagne[language]);
+				// Bouton bac à sable
+				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65))
+					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, BLACK, arial72, WHITE, bacasable[language]);
+				else
+					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, LIGHTBLUE, arial72, WHITE, bacasable[language]);
+			}
+			else {
+				// Bouton options
+				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.38))
+					Button(SCREENX * 0.25, SCREENY * 0.25, SCREENX * 0.75, SCREENY * 0.38, BLACK, arial72, WHITE, options[language]);
+				else
+					Button(SCREENX * 0.25, SCREENY * 0.25, SCREENX * 0.75, SCREENY * 0.38, PURPLE, arial72, WHITE, options[language]);
+				// Bouton jouer
+				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.42) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.55))
+					Button(SCREENX * 0.25, SCREENY * 0.42, SCREENX * 0.75, SCREENY * 0.55, BLACK, arial72, WHITE, jouer[language]);
+				else
+					Button(SCREENX * 0.25, SCREENY * 0.42, SCREENX * 0.75, SCREENY * 0.55, BLUE, arial72, WHITE, jouer[language]);
+				// Bouton quitter
+				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.59) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.72))
+					Button(SCREENX * 0.25, SCREENY * 0.59, SCREENX * 0.75, SCREENY * 0.72, BLACK, arial72, WHITE, quitter[language]);
+				else
+					Button(SCREENX * 0.25, SCREENY * 0.59, SCREENX * 0.75, SCREENY * 0.72, LIGHTBLUE, arial72, WHITE, quitter[language]);
+			}
+
+			// Passer le double buffer à l'écran
+			al_flip_display();
+		}
+	}
+}
+
+void RunMenuCampagne()
+{
+	printf("========arrivee dans menu campagne\n"); // debug
+	al_flush_event_queue(queue); // Vider la file d'évènements
+	MenuCampagne = 1;
+
+	while (MenuCampagne) {
+		dessiner = 0;
+
+		// Récupérer les évenements
+		ALLEGRO_EVENT event = { 0 };
+		al_wait_for_event(queue, &event);
+
+		// Evenement clavier
+		if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			printf("touche presse dans boucle campagne\n"); // debug
+			switch (event.keyboard.keycode) {
+			case ALLEGRO_KEY_F1: MenuCampagne = 0; break;
+			case ALLEGRO_KEY_F2: RunGame(0);  break;
+			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
+			}
+		}
+		// Evenement souris appuit
+		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+			printf("bouton %d presse dans la boucle campagne\n", event.mouse.button); // debug
+			// Bouton retour
+			if (event.mouse.button == 1 && mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
+				MenuCampagne = 0;
+			}
+
+			// Bouton niveau 1
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.04) && my >= (SCREENY * 0.3) && mx <= (SCREENX * 0.3) && my <= (SCREENY * 0.7)) {
+				RunGame(0);
+			}
+
+			// Bouton niveau 2
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.37) && my >= (SCREENY * 0.3) && mx <= (SCREENX * 0.63) && my <= (SCREENY * 0.7)) {
+				RunGame(0);
+			}
+
+			// Bouton niveau 3
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.7) && my >= (SCREENY * 0.3) && mx <= (SCREENX * 0.96) && my <= (SCREENY * 0.7)) {
+				RunGame(0);
+			}
+		}
+		// Evenement souris relâche
+		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+			printf("bouton %d relache dans la boucle campagne\n", event.mouse.button); // debug
+		}
+		// Evenement souris bougé
+		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
+			//printf("x:%4d y:%4d dx:%4d dy:%4d z:%3d w%3d dans boucle principale\n",
+				//event.mouse.x, event.mouse.y, // position hori et verti
+				//event.mouse.x, event.mouse.y, // mouvement hori et verti
+				//event.mouse.x, event.mouse.y); // position molette verticale, hori
+			mx = event.mouse.x;
+			my = event.mouse.y;
+		}
+		// Evenement timer
+		else if (event.type == ALLEGRO_EVENT_TIMER) {
+			dessiner = 1;
+		}
+		// Contrôle fin du programme
+		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			exit(EXIT_SUCCESS);
+		}
+
+		if (dessiner == 1) {
+			// Nettoyer
+			al_clear_to_color(SKY);
+
+			// Image de fond
+			al_draw_scaled_bitmap(background0, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(background1, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+
+			// Rectangle gris
+			al_draw_filled_rectangle(0, SCREENY * 0.2, SCREENX, SCREENY * 0.8, GREY);
+
+			// Carré gauche
+			if (mx >= SCREENX * 0.04 && my >= SCREENY * 0.3 && mx <= SCREENX * 0.3 && my <= SCREENY * 0.7)
+				al_draw_filled_rectangle(SCREENX * 0.04, SCREENY * 0.3, SCREENX * 0.3, SCREENY * 0.7, VLIGHTGREY);
+			else 
+				al_draw_filled_rectangle(SCREENX * 0.04, SCREENY * 0.3, SCREENX * 0.3, SCREENY * 0.7, LIGHTGREY);
+				
+			al_draw_scaled_bitmap(vignette1, 0, 0, 1920, 1080, SCREENX * 0.05, SCREENY * 0.31, SCREENX * 0.24, SCREENY * 0.22, 0);
+			al_draw_textf(arial72, BLACK, SCREENX * 0.17, SCREENY * 0.55, ALLEGRO_ALIGN_CENTER, "1");
+			
+			// Carré milieu
+			if (mx >= SCREENX * 0.37 && my >= SCREENY * 0.3 && mx <= SCREENX * 0.63 && my <= SCREENY * 0.7)
+				al_draw_filled_rectangle(SCREENX * 0.37, SCREENY * 0.3, SCREENX * 0.63, SCREENY * 0.7, VLIGHTGREY);
 			else
-				Button(SCREENX * 0.25, SCREENY * 0.25, SCREENX * 0.75, SCREENY * 0.38, PURPLE, arial72, WHITE, options[language]);
-			// Bouton jouer
-			if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.42) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.55))
-				Button(SCREENX * 0.25, SCREENY * 0.42, SCREENX * 0.75, SCREENY * 0.55, BLACK, arial72, WHITE, jouer[language]);
+				al_draw_filled_rectangle(SCREENX * 0.37, SCREENY * 0.3, SCREENX * 0.63, SCREENY * 0.7, LIGHTGREY);
+
+			al_draw_scaled_bitmap(vignette1, 0, 0, 1920, 1080, SCREENX * 0.38, SCREENY * 0.31, SCREENX * 0.24, SCREENY * 0.22, 0);
+			al_draw_textf(arial72, BLACK, SCREENX * 0.5, SCREENY * 0.55, ALLEGRO_ALIGN_CENTER, "2");
+			
+			// Carré droit
+			if (mx >= SCREENX * 0.7 && my >= SCREENY * 0.3 && mx <= SCREENX * 0.96 && my <= SCREENY * 0.7)
+				al_draw_filled_rectangle(SCREENX * 0.7, SCREENY * 0.3, SCREENX * 0.96, SCREENY * 0.7, VLIGHTGREY);
 			else
-				Button(SCREENX * 0.25, SCREENY * 0.42, SCREENX * 0.75, SCREENY * 0.55, BLUE, arial72, WHITE, jouer[language]);
-			// Bouton quitter
-			if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.59) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.72))
-				Button(SCREENX * 0.25, SCREENY * 0.59, SCREENX * 0.75, SCREENY * 0.72, BLACK, arial72, WHITE, quitter[language]);
+				al_draw_filled_rectangle(SCREENX * 0.7, SCREENY * 0.3, SCREENX * 0.96, SCREENY * 0.7, LIGHTGREY);
+
+			al_draw_scaled_bitmap(vignette1, 0, 0, 1920, 1080, SCREENX * 0.71, SCREENY * 0.31, SCREENX * 0.24, SCREENY * 0.22, 0);
+			al_draw_textf(arial72, BLACK, SCREENX * 0.83, SCREENY * 0.55, ALLEGRO_ALIGN_CENTER, "3");
+
+			// Bouton retour
+			if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40)
+				Button(0, 0, 60, 40, BLACK, arial32, WHITE, "<==");
 			else
-				Button(SCREENX * 0.25, SCREENY * 0.59, SCREENX * 0.75, SCREENY * 0.72, LIGHTBLUE, arial72, WHITE, quitter[language]);
+				Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
+
+			// Passer le double buffer à l'écran
+			al_flip_display();
+		}
+	}
+}
+
+void RunMenuSandbox()
+{
+	printf("========arrivee dans menu sandbox\n"); // debug
+	al_flush_event_queue(queue); // Vider la file d'évènements
+	MenuSandbox = 1;
+
+	while (MenuSandbox) {
+		dessiner = 0;
+
+		// Récupérer les évenements
+		ALLEGRO_EVENT event = { 0 };
+		al_wait_for_event(queue, &event);
+
+		// Evenement clavier
+		if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			printf("touche presse dans boucle sandbox\n"); // debug
+			switch (event.keyboard.keycode) {
+			case ALLEGRO_KEY_F1: MenuSandbox = 0; break;
+			case ALLEGRO_KEY_F2: RunGame(0);  break;
+			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
+			}
+			
+		}
+		// Evenement souris appuit
+		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+			printf("bouton %d presse dans la boucle sandbox\n", event.mouse.button); // debug
+			// Selection case à remplir
+			for (int i = 0; i < 7; i++)
+				sboptions[i] = 0;
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.26) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.31))
+				sboptions[0] = 1;
+			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.32) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.37))
+				sboptions[1] = 1;
+			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.38) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.43))
+				sboptions[2] = 1;
+			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.44) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.49))
+				sboptions[3] = 1;
+			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.50) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.55))
+				sboptions[4] = 1;
+			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.56) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.61))
+				sboptions[5] = 1;
+			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.62) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.67))
+				sboptions[6] = 1;
+
+			// Bouton retour
+			if (event.mouse.button == 1 && mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
+				MenuSandbox = 0;
+			}
+			// Bouton commencer
+			if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.70) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.77)) {
+				RunGame(0);
+			}
+		}
+		// Evenement souris relâche
+		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+			printf("bouton %d relache dans la boucle sandbox\n", event.mouse.button); // debug
+		}
+		// Evenement souris bougé
+		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
+			//printf("x:%4d y:%4d dx:%4d dy:%4d z:%3d w%3d dans boucle principale\n",
+				//event.mouse.x, event.mouse.y, // position hori et verti
+				//event.mouse.x, event.mouse.y, // mouvement hori et verti
+				//event.mouse.x, event.mouse.y); // position molette verticale, hori
+			mx = event.mouse.x;
+			my = event.mouse.y;
+		}
+		// Evenement timer
+		else if (event.type == ALLEGRO_EVENT_TIMER) {
+			dessiner = 1;
+		}
+		// Contrôle fin du programme
+		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			exit(EXIT_SUCCESS);
+		}
+
+		if (dessiner == 1) {
+			// Nettoyer
+			al_clear_to_color(SKY);
+
+			// Image de fond
+			al_draw_scaled_bitmap(background0, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(background1, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+
+			// Rectangle gris
+			al_draw_filled_rectangle(SCREENX * 0.2, SCREENY * 0.2, SCREENX * 0.8, SCREENY * 0.8, LIGHTGREY);
+
+			// Texte
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.26, ALLEGRO_ALIGN_LEFT, "Etoiles");
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.32, ALLEGRO_ALIGN_LEFT, "Ennemis");
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.38, ALLEGRO_ALIGN_LEFT, "Temps protection");
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.44, ALLEGRO_ALIGN_LEFT, "Vies");
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.50, ALLEGRO_ALIGN_LEFT, "Gravite");
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.56, ALLEGRO_ALIGN_LEFT, "Puissance de saut");
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.62, ALLEGRO_ALIGN_LEFT, "Tick");
+
+			// Etoiles
+			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.26) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.31))
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.26, SCREENX * 0.77, SCREENY * 0.31, VLIGHTGREY);
+			else
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.26, SCREENX * 0.77, SCREENY * 0.31, WHITE);
+
+			if (sboptions[0])
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.26, SCREENX * 0.56, SCREENY * 0.31, LIGHTBLUE);
+
+			// Ennemis
+			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.32) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.37))
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.32, SCREENX * 0.77, SCREENY * 0.37, VLIGHTGREY);
+			else
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.32, SCREENX * 0.77, SCREENY * 0.37, WHITE);
+
+			if (sboptions[1])
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.32, SCREENX * 0.56, SCREENY * 0.37, LIGHTBLUE);
+			
+			// Temps protection
+			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.38) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.43))
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.38, SCREENX * 0.77, SCREENY * 0.43, VLIGHTGREY);
+			else
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.38, SCREENX * 0.77, SCREENY * 0.43, WHITE);
+
+			if (sboptions[2])
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.38, SCREENX * 0.56, SCREENY * 0.43, LIGHTBLUE);
+			
+			// Vies
+			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.44) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.49))
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.44, SCREENX * 0.77, SCREENY * 0.49, VLIGHTGREY);
+			else
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.44, SCREENX * 0.77, SCREENY * 0.49, WHITE);
+
+			if (sboptions[3])
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.44, SCREENX * 0.56, SCREENY * 0.49, LIGHTBLUE);
+			
+			// Gravitée
+			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.50) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.55))
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.50, SCREENX * 0.77, SCREENY * 0.55, VLIGHTGREY);
+			else
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.50, SCREENX * 0.77, SCREENY * 0.55, WHITE);
+
+			if (sboptions[4])
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.50, SCREENX * 0.56, SCREENY * 0.55, LIGHTBLUE);
+
+			// Puissance de saut
+			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.56) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.61))
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.56, SCREENX * 0.77, SCREENY * 0.61, VLIGHTGREY);
+			else
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.56, SCREENX * 0.77, SCREENY * 0.61, WHITE);
+
+			if (sboptions[5])
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.56, SCREENX * 0.56, SCREENY * 0.61, LIGHTBLUE);
+
+			// Tick
+			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.62) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.67))
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.62, SCREENX * 0.77, SCREENY * 0.67, VLIGHTGREY);
+			else
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.62, SCREENX * 0.77, SCREENY * 0.67, WHITE);
+
+			if (sboptions[6])
+				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.62, SCREENX * 0.56, SCREENY * 0.67, LIGHTBLUE);
+
+			//int memory = event.keyboard.keycode;
+			//al_draw_textf(arial32, BLACK, SCREENX * 0.60, SCREENY * 0.26, ALLEGRO_ALIGN_LEFT, 1);
+
+			// Bouton commencer
+			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.70) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.77))
+				Button(SCREENX * 0.55, SCREENY * 0.70, SCREENX * 0.77, SCREENY * 0.77, BLACK, arial32, WHITE, commencer[language]);
+			else
+				Button(SCREENX * 0.55, SCREENY * 0.70, SCREENX * 0.77, SCREENY * 0.77, LIGHTERGREY, arial32, BLACK, commencer[language]);
+
+			// Bouton retour
+			if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40)
+				Button(0, 0, 60, 40, BLACK, arial32, WHITE, "<==");
+			else
+				Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
 
 			// Passer le double buffer à l'écran
 			al_flip_display();
@@ -197,7 +541,7 @@ void RunMenu()
 }
 
 /*******************************************
-	SOUS-MENU / BOUCLE
+	OPTIONS / BOUCLE
 *******************************************/
 
 void RunOptions()
@@ -226,75 +570,94 @@ void RunOptions()
 			printf("bouton %d presse dans le sous menu\n", event.mouse.button);
 			// Bouton retour
 			if (event.mouse.button == 1 && mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
-				RunMenu();
-				Options = 0;
-				Game = 0;
-			}
-			// Menu déroulant résolution
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.35)) {
-				if (BSelectDisplay) {
-					BSelectDisplay = 0;
+				if (Credit) {
+					Credit = 0;
 				}
 				else {
-					BSelectDisplay = 1;
+					RunMenu();
+					Options = 0;
+					Game = 0;
+				}
+			}
+			if (Credit) {
+				// Bouton fermer
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.405) && my >= (SCREENY * 0.66) && mx <= (SCREENX * 0.605) && my <= (SCREENY * 0.76)) {
+					Credit = 0;
+				}
+			}
+			else {
+				// Bouton crédit
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.405) && my >= (SCREENY * 0.66) && mx <= (SCREENX * 0.605) && my <= (SCREENY * 0.76)) {
+					Credit = 1;
+					BSelectDisplay = 0;
 					BSelectDisplay2 = 0;
 				}
-			}
-			// 1024x768
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.45)) {
-				if (BSelectDisplay) {
-					al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, 0);
-					al_resize_display(display, 1024, 768);
-					SCREENX = al_get_display_width(display);
-					SCREENY = al_get_display_height(display);
-					BSelectDisplay = 0;
+				// Menu déroulant résolution
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.35)) {
+					if (BSelectDisplay) {
+						BSelectDisplay = 0;
+					}
+					else {
+						BSelectDisplay = 1;
+						BSelectDisplay2 = 0;
+					}
 				}
-			}
-			// 1600x1000
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.55)) {
-				if (BSelectDisplay) {
-					al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, 0);
-					al_resize_display(display, 1600, 1000);
-					SCREENX = al_get_display_width(display);
-					SCREENY = al_get_display_height(display);
-					BSelectDisplay = 0;
+				// 1024x768
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.45)) {
+					if (BSelectDisplay) {
+						al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, 0);
+						al_resize_display(display, 1024, 768);
+						SCREENX = al_get_display_width(display);
+						SCREENY = al_get_display_height(display);
+						BSelectDisplay = 0;
+					}
 				}
-			}
-			// 1920x1080
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.55) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.65)) {
-				if (BSelectDisplay) {
-					al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, 1);
-					al_resize_display(display, 1920, 1080);					
-					SCREENX = al_get_display_width(display);
-					SCREENY = al_get_display_height(display); 
-					BSelectDisplay = 0;
+				// 1600x1000
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.55)) {
+					if (BSelectDisplay) {
+						al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, 0);
+						al_resize_display(display, 1600, 1000);
+						SCREENX = al_get_display_width(display);
+						SCREENY = al_get_display_height(display);
+						BSelectDisplay = 0;
+					}
 				}
-			}
+				// 1920x1080
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.55) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.65)) {
+					if (BSelectDisplay) {
+						al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, 1);
+						al_resize_display(display, 1920, 1080);
+						SCREENX = al_get_display_width(display);
+						SCREENY = al_get_display_height(display);
+						BSelectDisplay = 0;
+					}
+				}
 
-			// Menu déroulant langage
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.35)) {
-				if (BSelectDisplay2) {
-					BSelectDisplay2 = 0;
+				// Menu déroulant langage
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.35)) {
+					if (BSelectDisplay2) {
+						BSelectDisplay2 = 0;
+					}
+					else {
+						BSelectDisplay2 = 1;
+						BSelectDisplay = 0;
+					}
 				}
-				else {
-					BSelectDisplay2 = 1;
-					BSelectDisplay = 0;
+				// Français
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.45)) {
+					if (BSelectDisplay2) {
+						language = 0;
+						BSelectDisplay2 = 0;
+					}
+				}
+				// Anglais
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.55)) {
+					if (BSelectDisplay2) {
+						language = 1;
+						BSelectDisplay2 = 0;
+					}
 				}
 			}
-			// Français
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.45)) {
-				if (BSelectDisplay2) {
-					language = 0;
-					BSelectDisplay2 = 0;
-				}
-			}
-			// Anglais
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.45) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.55)) {
-				if (BSelectDisplay2) {
-					language = 1;
-					BSelectDisplay2 = 0;
-				}
-			}		
 		}
 		// Evenement souris relâche
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
@@ -306,7 +669,6 @@ void RunOptions()
 				//event.mouse.x, event.mouse.y, // position hori et verti
 				//event.mouse.x, event.mouse.y, // mouvement hori et verti
 				//event.mouse.x, event.mouse.y); // position molette verticale, hori
-
 			mx = event.mouse.x;
 			my = event.mouse.y;
 		}
@@ -332,7 +694,7 @@ void RunOptions()
 			al_draw_filled_rectangle(SCREENX * 0.2, 0, SCREENX * 0.8, SCREENY, GREY);
 
 			// Bouton retour
-			if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40) 
+			if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40)
 				Button(0, 0, 60, 40, BLACK, arial32, WHITE, "<==");
 			else
 				Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
@@ -361,7 +723,7 @@ void RunOptions()
 					Button(SCREENX * 0.26, SCREENY * 0.55, SCREENX * 0.47, SCREENY * 0.65, LIGHTERGREY, arial32, BLACK, "1920x1080");
 			}
 			else {
-				if (mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.35))
+				if ( Credit == 0 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.35))
 					Button(SCREENX * 0.26, SCREENY * 0.25, SCREENX * 0.47, SCREENY * 0.35, BLACK, arial32, WHITE, resolution[language]);
 				else
 					Button(SCREENX * 0.26, SCREENY * 0.25, SCREENX * 0.47, SCREENY * 0.35, WHITE, arial32, BLACK, resolution[language]);
@@ -386,10 +748,32 @@ void RunOptions()
 					Button(SCREENX * 0.53, SCREENY * 0.45, SCREENX * 0.74, SCREENY * 0.55, LIGHTGREY, arial32, BLACK, "English");
 			}
 			else {
-				if (mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.35))
+				if ( Credit == 0 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.35))
 					Button(SCREENX * 0.53, SCREENY * 0.25, SCREENX * 0.74, SCREENY * 0.35, BLACK, arial32, WHITE, lang[language]);
 				else
 					Button(SCREENX * 0.53, SCREENY * 0.25, SCREENX * 0.74, SCREENY * 0.35, WHITE, arial32, BLACK, lang[language]);
+			}
+
+			// Bouton crédit
+			if ( Credit == 0 && mx >= (SCREENX * 0.405) && my >= (SCREENY * 0.66) && mx <= (SCREENX * 0.605) && my <= (SCREENY * 0.76))
+				Button(SCREENX * 0.405, SCREENY * 0.66, SCREENX * 0.605, SCREENY * 0.76, BLACK, arial32, WHITE, "Credit");
+			else
+				Button(SCREENX * 0.405, SCREENY * 0.66, SCREENX * 0.605, SCREENY * 0.76, WHITE, arial32, BLACK, "Credit");
+		
+			if (Credit) {
+				// Rectangle des crédits au milieu
+				al_draw_filled_rectangle(SCREENX * 0.1, SCREENY * 0.35, SCREENX * 0.9, SCREENY * 0.7, LIGHTGREY);
+
+				// Bouton fermer
+				if (mx >= (SCREENX * 0.405) && my >= (SCREENY * 0.66) && mx <= (SCREENX * 0.605) && my <= (SCREENY * 0.76))
+					Button(SCREENX * 0.405, SCREENY * 0.66, SCREENX * 0.605, SCREENY * 0.76, BLACK, arial32, WHITE, fermer[language]);
+				else
+					Button(SCREENX * 0.405, SCREENY * 0.66, SCREENX * 0.605, SCREENY * 0.76, WHITE, arial32, BLACK, fermer[language]);
+
+				// Texte
+				al_draw_textf(arial32, BLACK, SCREENX * 0.5, SCREENY * 0.4, ALLEGRO_ALIGN_CENTER, txtcredit1[language]);
+				al_draw_textf(arial22, BLACK, SCREENX * 0.5, SCREENY * 0.5, ALLEGRO_ALIGN_CENTER, txtcredit2[language]);
+				al_draw_textf(arial22, BLACK, SCREENX * 0.5, SCREENY * 0.6, ALLEGRO_ALIGN_CENTER, txtcredit3[language]);
 			}
 
 			// Passer le double buffer à l'écran
@@ -417,6 +801,9 @@ void ResetGame()
 	ESheetDisplay = 0;
 	x = SCREENXD+100; // Position du joueur
 	y = SCREENYD+100;
+	dx0 = 0;
+	dx1 = 0;
+	dx2 = 0;
 
 	for (int i = 0; i < PERSONNAGEMAX; i++)
 		personnages[i] = CreatePersonnage(RED);
@@ -429,7 +816,7 @@ void ResetGame()
 	JEU / BOUCLE
 *******************************************/
 
-void RunGame()
+void RunGame(int niveau)
 {
 	ResetGame();
 	printf("========arrivee dans jeu\n"); // debug
@@ -603,7 +990,7 @@ void RunGame()
 			al_draw_scaled_bitmap(background2, dx2, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 			al_draw_scaled_bitmap(background3, dx2, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 
-			// Image des hitbox bstacles/sol
+			// Image des hitbox obstacles/sol
 			if (HitboxDisplay == 1)
 				al_draw_scaled_bitmap(hitbox, dx2, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 
@@ -613,17 +1000,17 @@ void RunGame()
 
 			// Images des coeurs
 			if (life >= 1)
-				al_draw_bitmap(heart, 100, 0, 0);
+				al_draw_bitmap(or, 100, 0, 0);
 			if (life >= 2)
-				al_draw_bitmap(heart, 150, 0, 0);
+				al_draw_bitmap(or, 150, 0, 0);
 			if (life >= 3)
-				al_draw_bitmap(heart, 200, 0, 0);
+				al_draw_bitmap(or, 200, 0, 0);
 			if (life >= 4)
-				al_draw_bitmap(heart, 250, 0, 0);
+				al_draw_bitmap(or, 250, 0, 0);
 			if (life >= 5)
-				al_draw_bitmap(heart, 300, 0, 0);
+				al_draw_bitmap(or, 300, 0, 0);
 			if (life >= 6)
-				al_draw_bitmap(heart, 350, 0, 0);
+				al_draw_bitmap(or, 350, 0, 0);
 
 			// Nettoyage des anciennes images d'ennemis/étoiles
 			al_set_target_bitmap(esheet);

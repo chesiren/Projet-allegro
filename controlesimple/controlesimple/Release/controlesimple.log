@@ -1,0 +1,42 @@
+﻿  jeu.c
+  main.c
+  menu.c
+  options.c
+menu.obj : error LNK2005: _key déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _BSelectDisplay déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _BSelectDisplay2 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _dxhb déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _hitboxdisplay déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _Menu déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _dx2 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _c_left déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _debug déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _quitter2 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _menu_p2 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _jouer2 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _c_down déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _options2 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _esheetdisplay déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _Death déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _resolution2 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _dx0 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _language déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _dxe déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _dx1 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _quitter déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _rejouer2 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _options déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _menu_p déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _lang déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _Game déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _resolution déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _Options déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _jouer déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _c_up déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _lang2 déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _c_right déjà défini(e) dans main.obj
+menu.obj : error LNK2005: _rejouer déjà défini(e) dans main.obj
+main.obj : error LNK2005: _DestroyMenu déjà défini(e) dans main.obj
+main.obj : error LNK2005: _RunMenu déjà défini(e) dans main.obj
+main.obj : error LNK2005: _InitMenu déjà défini(e) dans main.obj
+C:\Users\chesi\OneDrive\Bureau\Projet-allegro-master - Copie\controlesimple\Release\controlesimple.exe : fatal error LNK1169: un ou plusieurs symboles définis à différentes reprises ont été rencontrés

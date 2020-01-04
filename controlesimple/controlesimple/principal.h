@@ -15,8 +15,9 @@
 
 #define BLACK al_map_rgb(0,0,0)
 #define GREY al_map_rgb(50,50,50)
-#define LIGHTGREY al_map_rgb(150,150,150)
-#define LIGHTERGREY al_map_rgb(130,130,130)
+#define LIGHTGREY al_map_rgb(130,130,130)
+#define LIGHTERGREY al_map_rgb(160,160,160)
+#define VLIGHTGREY al_map_rgb(220,220,220)
 #define WHITE al_map_rgb(255,255,255)
 #define LIGHTBLUE al_map_rgb(0,100,255)
 #define SKY al_map_rgb(50,128,200)
@@ -41,6 +42,8 @@ _Bool key[KEY_MAX] = { 0 };
 // Menu
 void Initialisation(void);
 void RunMenu(void);
+void RunMenuCampagne(void);
+void RunMenuSandbox(void);
 void Destroy(void);
 
 // Options
@@ -48,7 +51,7 @@ void RunOptions(void);
 
 // Jeu
 void ResetGame(void);
-void RunGame(void);
+void RunGame(int niveau);
 
 // Outils
 void Error(char* txt);
@@ -60,6 +63,7 @@ void Kill(void);
 ALLEGRO_DISPLAY* display;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer;
+ALLEGRO_FONT* arial22;
 ALLEGRO_FONT* arial32;
 ALLEGRO_FONT* arial72;
 
@@ -68,8 +72,9 @@ ALLEGRO_BITMAP* background0;
 ALLEGRO_BITMAP* background1;
 ALLEGRO_BITMAP* background2;
 ALLEGRO_BITMAP* background3;
+ALLEGRO_BITMAP* vignette1;
 ALLEGRO_BITMAP* esheet;
-ALLEGRO_BITMAP* heart;
+ALLEGRO_BITMAP* or;
 ALLEGRO_BITMAP* hitbox;
 
 int SCREENX;
@@ -84,6 +89,7 @@ int fontsize;
 int language = 0;
 float protect;
 float starprotect;
+int sboptions[7] = { 0 };
 
 float jump;
 float pulse;
@@ -97,7 +103,11 @@ bool c_left = 0;
 bool c_down = 0;
 
 bool Menu = 0;
+bool SousMenu = 0;
+bool MenuCampagne = 0;
+bool MenuSandbox = 0;
 bool Options = 0;
+bool Credit = 0;
 bool Game = 0;
 bool Death = 0;
 
@@ -113,6 +123,15 @@ char lang[2][16] = { "Langage", "Language" };
 char rejouer[2][16] = { "Rejouer", "Play again" };
 char menu_p[2][16] = { "Menu principal", "Main menu" };
 char resolution[2][16] = { "Resolution", "Screen size" };
+char campagne[2][16] = { "Campagne", "Story" };
+char bacasable[2][16] = { "Bac a sable", "Sandbox" };
+char commencer[2][16] = { "Commencer", "Start" };
+char fermer[2][16] = { "Fermer", "Close" };
+char txtcredit1[2][50] = { "Images libres de droit de craftpix.net", "Free to use pictures from craftpix.net" };
+char txtcredit2[2][100] = { "Fond: https://craftpix.net/freebies/free-cartoon-forest-game-backgrounds/", "Background: https://craftpix.net/freebies/free-cartoon-forest-game-backgrounds/" };
+char txtcredit3[2][100] = { "Icones: https://craftpix.net/freebies/free-game-icons-of-fantasy-things-pack-15/", "Icons: https://craftpix.net/freebies/free-game-icons-of-fantasy-things-pack-15/" };
+
+
 
 typedef struct Personnage {
 	float ex, ey;				// Position
