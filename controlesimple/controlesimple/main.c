@@ -73,13 +73,13 @@ void Initialisation()
 	al_start_timer(timer);
 
 	// Images de fond
-	background0 = al_load_bitmap("BG_Decor.png");
+	background0 = al_load_bitmap("Background00.png");
 	if (!background0)
 		Error("al_load_background0()");
-	background1 = al_load_bitmap("Middle_Decor.png");
+	background1 = al_load_bitmap("Background11.png");
 	if (!background1)
 		Error("al_load_background1()");
-	background2 = al_load_bitmap("ground + fore.png");
+	background2 = al_load_bitmap("Background22.png");
 	if (!background2)
 		Error("al_load_background2()");
 	background3 = al_load_bitmap("platform.png");
@@ -804,6 +804,7 @@ void ResetGame()
 	dx0 = 0;
 	dx1 = 0;
 	dx2 = 0;
+	dx3 = 0;
 
 	for (int i = 0; i < PERSONNAGEMAX; i++)
 		personnages[i] = CreatePersonnage(RED);
@@ -926,6 +927,7 @@ void RunGame(int niveau)
 					dx0 += 2;
 					dx1 += 5;
 					dx2 += 10;
+					dx3 += 10;
 				}
 				if (key[KEY_UP] == 1 && c_down == 1 && c_up == 0) {
 					jump = 1.00;
@@ -935,6 +937,7 @@ void RunGame(int niveau)
 					dx0 -= 2;
 					dx1 -= 5;
 					dx2 -= 10;
+					dx3 -= 10;
 				}
 				if (key[KEY_DOWN] == 1 && c_down == 0) {
 					y += 10;
@@ -988,15 +991,37 @@ void RunGame(int niveau)
 			al_draw_scaled_bitmap(background0, dx0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 			al_draw_scaled_bitmap(background1, dx1, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 			al_draw_scaled_bitmap(background2, dx2, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
-			al_draw_scaled_bitmap(background3, dx2, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(background3, dx3, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
+			
+			//défilement infini des backgrounds
+			if (dx0 > 1920) {
+				dx0 = 0;
+			}
+			if (dx0 < 0) {
+				dx0 = 1920;
+			}
 
+			if (dx1 > 1920) {
+				dx1 = 0;
+			}
+			if (dx1 < 0) {
+				dx1 = 1920;
+			}
+
+			if (dx2 > 1920) {
+				dx2 = 0;
+			}
+			if (dx2 < 0) {
+				dx2 = 1920;
+			}
+			
 			// Image des hitbox obstacles/sol
 			if (HitboxDisplay == 1)
-				al_draw_scaled_bitmap(hitbox, dx2, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
+				al_draw_scaled_bitmap(hitbox, dx3, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 
 			// Image des hitbox d'ennemis/étoiles
 			if (ESheetDisplay == 1)
-				al_draw_scaled_bitmap(esheet, dx2, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
+				al_draw_scaled_bitmap(esheet, dx3, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 
 			// Images des coeurs
 			if (life >= 1)
@@ -1127,10 +1152,10 @@ void Collision(int* x, int* y)
 {
 	// Collisions sol/obstacles 
 	// Objectif autoriser le déplacement ou pas
-	ALLEGRO_COLOR color_down = al_get_pixel(hitbox, *x + 10+dx2, *y + 21);
-	ALLEGRO_COLOR color_up = al_get_pixel(hitbox, *x + 10+dx2, *y - 15);
-	ALLEGRO_COLOR color_right = al_get_pixel(hitbox, *x + 21+dx2, *y + 10);
-	ALLEGRO_COLOR color_left = al_get_pixel(hitbox, *x - 1+dx2, *y + 10);
+	ALLEGRO_COLOR color_down = al_get_pixel(hitbox, *x + 10+dx3, *y + 21);
+	ALLEGRO_COLOR color_up = al_get_pixel(hitbox, *x + 10+dx3, *y - 15);
+	ALLEGRO_COLOR color_right = al_get_pixel(hitbox, *x + 21+dx3, *y + 10);
+	ALLEGRO_COLOR color_left = al_get_pixel(hitbox, *x - 1+dx3, *y + 10);
 
 	unsigned char r, g, b;
 	
@@ -1256,11 +1281,11 @@ void AffichePersonnage(Personnage* p)
 {
 	// Dessiner la hitbox
 	al_set_target_bitmap(esheet);
-	al_draw_filled_rectangle(p->ex-dx2, p->ey, p->ex + 20-dx2, p->ey + 20, p->color);
+	al_draw_filled_rectangle(p->ex-dx3, p->ey, p->ex + 20-dx3, p->ey + 20, p->color);
 	
 	// Dessiner sur l'image de fond
 	al_set_target_backbuffer(al_get_current_display());
-	al_draw_bitmap(p->im, p->ex-dx2, p->ey, 0);
+	al_draw_bitmap(p->im, p->ex-dx3, p->ey, 0);
 }
 
 void AvancePersonnage(Personnage* p)

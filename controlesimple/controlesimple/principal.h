@@ -84,7 +84,7 @@ int SCREENYD;
 int mx, my, x, y;
 int life;
 int star;
-int dx0=0, dx1=0, dx2=0; // Coordonnées des backgrounds
+int dx0=0, dx1=0, dx2=0, dx3=0; // Coordonnées des backgrounds et platforme
 int fontsize;
 int language = 0;
 float protect;
