@@ -31,7 +31,7 @@
 #define ORANGE al_map_rgb(200,100,0)
 #define YELLOW al_map_rgb(255,200,0)
 
-#define PERSONNAGEMAX	10
+#define PERSONNAGEMAX	5
 #define ETOILEMAX	3
 #define TICK 30
 
@@ -67,7 +67,7 @@ ALLEGRO_FONT* arial22;
 ALLEGRO_FONT* arial32;
 ALLEGRO_FONT* arial72;
 
-// bitmap
+// Bitmap
 ALLEGRO_BITMAP* background0;
 ALLEGRO_BITMAP* background1;
 ALLEGRO_BITMAP* background2;
@@ -76,7 +76,13 @@ ALLEGRO_BITMAP* vignette1;
 ALLEGRO_BITMAP* esheet;
 ALLEGRO_BITMAP* or;
 ALLEGRO_BITMAP* hitbox;
+//Sprits personnages
+ALLEGRO_BITMAP* Animwait[4];
+ALLEGRO_BITMAP* Animrun[6];
+ALLEGRO_BITMAP* Animrunl[6];
+ALLEGRO_BITMAP* Animjump[8];
 
+int a, b = 0;
 int SCREENX;
 int SCREENY;
 int SCREENXD;

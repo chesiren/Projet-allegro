@@ -86,6 +86,83 @@ void Initialisation()
 	if (!background3)
 		Error("al_load_background3()");
 
+	//Images personages
+	Animwait[0] = al_load_bitmap("Animwait1.png");
+	if (!Animwait[0])
+		Error("Animwait1");
+	Animwait[1] = al_load_bitmap("Animwait2.png");
+	if (!Animwait[1])
+		Error("Animwait2");
+	Animwait[2] = al_load_bitmap("Animwait3.png");
+	if (!Animwait[2])
+		Error("Animwait3");
+	Animwait[3] = al_load_bitmap("Animwait4.png");
+	if (!Animwait[3])
+		Error("Animwait4");
+
+	Animrun[0] = al_load_bitmap("Animrun1.png");
+	if (!Animrun[0])
+		Error("Animrun1");
+	Animrun[1] = al_load_bitmap("Animrun2.png");
+	if (!Animrun[1])
+		Error("Animrun2");
+	Animrun[2] = al_load_bitmap("Animrun3.png");
+	if (!Animrun[2])
+		Error("Animrun3");
+	Animrun[3] = al_load_bitmap("Animrun4.png");
+	if (!Animrun[3])
+		Error("Animrun4");
+	Animrun[4] = al_load_bitmap("Animrun5.png");
+	if (!Animrun[4])
+		Error("Animrun5");
+	Animrun[5] = al_load_bitmap("Animrun6.png");
+	if (!Animrun[5])
+		Error("Animrun6");
+	
+	Animrunl[0] = al_load_bitmap("Animrun1l.png");
+	if (!Animrunl[0])
+		Error("Animrun1l");
+	Animrunl[1] = al_load_bitmap("Animrun2l.png");
+	if (!Animrunl[1])
+		Error("Animrun2l");
+	Animrunl[2] = al_load_bitmap("Animrun3l.png");
+	if (!Animrunl[2])
+		Error("Animrun3l");
+	Animrunl[3] = al_load_bitmap("Animrun4l.png");
+	if (!Animrunl[3])
+		Error("Animrun4l");
+	Animrunl[4] = al_load_bitmap("Animrun5l.png");
+	if (!Animrunl[4])
+		Error("Animrun5l");
+	Animrunl[5] = al_load_bitmap("Animrun6l.png");
+	if (!Animrunl[5])
+		Error("Animrun6l");
+
+	Animjump[0] = al_load_bitmap("Animjump1.png");
+	if (!Animjump[0])
+		Error("Animjump1");
+	Animjump[1] = al_load_bitmap("Animjump2.png");
+	if (!Animjump[1])
+		Error("Animjump2");
+	Animjump[2] = al_load_bitmap("Animjump3.png");
+	if (!Animjump[2])
+		Error("Animjump3");
+	Animjump[3] = al_load_bitmap("Animjump4.png");
+	if (!Animjump[3])
+		Error("Animjump4");
+	Animjump[4] = al_load_bitmap("Animjump5.png");
+	if (!Animjump[4])
+		Error("Animjump5");
+	Animjump[5] = al_load_bitmap("Animjump6.png");
+	if (!Animjump[5])
+		Error("Animjump6");
+	Animjump[6] = al_load_bitmap("Animjump7.png");
+	if (!Animjump[6])
+		Error("Animjump7");
+	Animjump[7] = al_load_bitmap("Animjump8.png");
+	if (!Animjump[7])
+		Error("Animjump8");
+
 	vignette1 = al_load_bitmap("vignette1.png");
 	if (!vignette1)
 		Error("al_load_vignette1()");
@@ -1086,6 +1163,59 @@ void RunGame(int niveau)
 				else
 					al_draw_filled_rectangle(x, y, x + 20, y + 20, CUBE);
 			}
+
+			//Animation personnage principale
+			if (Death == 0) {
+				if (key[KEY_RIGHT] == 1 && c_right == 0) {
+					//La vitesse entre les sprits
+					a += 1;
+					if (a>3){
+						b += 1;
+						if (b > 5) {
+							b = 0;
+						}
+						a = 0;
+					}
+					al_draw_bitmap(Animrun[b], x + 2, y - 2, 0);
+				}
+				else if (key[KEY_LEFT] == 1 && c_left == 0) {
+					a += 1;
+					if (a > 3) {
+						b += 1;
+						if (b > 5) {
+							b = 0;
+						}
+						a = 0;
+					}
+					if (y < 2000) {
+						al_draw_bitmap(Animrunl[b], x + 2, y - 2, 0);
+					}
+				}
+				else if (jump > 0) {
+					a += 1;
+					if (a > 3) {
+						b += 1;
+						if (b > 7) {
+							b = 0;
+						}
+						a = 0;
+					}
+					al_draw_bitmap(Animjump[b], x + 2, y - 2, 0);
+				}
+				if (key[KEY_DOWN] == 0 && key[KEY_UP] == 0 && key[KEY_LEFT] == 0 && key[KEY_RIGHT] == 0 && jump <= 0)
+				{
+					a += 1;
+					if (a > 6) {
+						b += 1;
+						if (b > 3) {
+							b = 0;
+						}
+						a = 0;
+					}
+					al_draw_bitmap(Animwait[b], x+2, y-2, 0);
+				}
+			}
+
 			// Passer le double buffer à l'écran
 			al_flip_display();
 		}
