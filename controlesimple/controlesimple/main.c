@@ -1278,57 +1278,57 @@ void RunGame(int niveau)
 			if (Death == 0) {
 				if (key[KEY_RIGHT] == 1 && c_right == 0) {
 					//La vitesse entre les sprits
-					a += 1;
-					if (a > 3) {
-						b += 1;
-						if (b > 5) {
-							b = 0;
+					k += 1;
+					if (k > 3) {
+						l += 1;
+						if (l > 5) {
+							l = 0;
 						}
-						a = 0;
+						k = 0;
 					}
 					orientation = 1;
-					al_draw_bitmap(Animrun[b], x + 2, y - 2, 0);
+					al_draw_bitmap(Animrun[l], x + 2, y - 2, 0);
 				}
 				else if (key[KEY_LEFT] == 1 && c_left == 0) {
-					a += 1;
-					if (a > 3) {
-						b += 1;
-						if (b > 5) {
-							b = 0;
+					k += 1;
+					if (k > 3) {
+						l += 1;
+						if (l > 5) {
+							l = 0;
 						}
-						a = 0;
+						k = 0;
 					}
 					orientation = 0;
-					al_draw_bitmap(Animrun[b], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
+					al_draw_bitmap(Animrun[l], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
 				}
 				else if (jump > 0) {
-					a += 1;
-					if (a > 3) {
-						b += 1;
-						if (b > 7) {
-							b = 0;
+					k += 1;
+					if (k > 3) {
+						l += 1;
+						if (l > 7) {
+							l = 0;
 						}
-						a = 0;
+						k = 0;
 					}
 					if (orientation)
-						al_draw_bitmap(Animjump[b], x + 2, y - 2, 0);
+						al_draw_bitmap(Animjump[l], x + 2, y - 2, 0);
 					else
-						al_draw_bitmap(Animjump[b], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
+						al_draw_bitmap(Animjump[l], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
 				}
 				if (key[KEY_DOWN] == 0 && key[KEY_UP] == 0 && key[KEY_LEFT] == 0 && key[KEY_RIGHT] == 0 && jump <= 0)
 				{
-					a += 1;
-					if (a > 6) {
-						b += 1;
-						if (b > 3) {
-							b = 0;
+					k += 1;
+					if (k > 6) {
+						l += 1;
+						if (l > 3) {
+							l = 0;
 						}
-						a = 0;
+						k = 0;
 					}
 					if (orientation)
-						al_draw_bitmap(Animwait[b], x + 2, y - 2, 0);
+						al_draw_bitmap(Animwait[l], x + 2, y - 2, 0);
 					else
-						al_draw_bitmap(Animwait[b], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
+						al_draw_bitmap(Animwait[l], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
 				}
 			}
 

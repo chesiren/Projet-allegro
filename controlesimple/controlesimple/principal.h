@@ -84,7 +84,7 @@ ALLEGRO_BITMAP* Animwait[4];
 ALLEGRO_BITMAP* Animrun[6];
 ALLEGRO_BITMAP* Animjump[8];
 
-int a, b = 0;
+int k, l = 0;
 bool orientation = 0;
 int SCREENX;
 int SCREENY;
