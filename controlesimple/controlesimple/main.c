@@ -1,4 +1,4 @@
-#include "principal.h"
+ï»¿#include "principal.h"
 
 int main()
 {
@@ -33,7 +33,7 @@ void Initialisation()
 	if (!al_init_image_addon())
 		Error("al_init_image_addon()");
 
-	// Récupération de la police voulue
+	// RÃ©cupÃ©ration de la police voulue
 	arial22 = al_load_font("arial.ttf", 22, 0);
 	if (!arial22)
 		Error("al_load_font(\"arial.ttf\", 22, 0)");
@@ -46,24 +46,24 @@ void Initialisation()
 	if (!arial72)
 		Error("al_load_font(\"arial.ttf\", 72, 0)");
 
-	// Création fenêtre
+	// CrÃ©ation fenÃªtre
 	display = al_create_display(1024, 768);
 	if (!display)
 		Error("al_create_display(1024, 768)");
 
 	al_set_window_title(display, "Projet allegro");
 
-	// Création de timer ( pour du graphisme à changer en 1.0/60 )
+	// CrÃ©ation de timer ( pour du graphisme Ã  changer en 1.0/60 )
 	timer = al_create_timer(1.0 / TICK);
 	if (!timer)
-		Error("al_create_timer(1.0/60)");
+		Error("al_create_timer(1.0/30)");
 
-	// Mise en place d'une file d'évenements
+	// Mise en place d'une file d'Ã©venements
 	queue = al_create_event_queue();
 	if (!queue)
 		Error("al_create_event_queue()");
 
-	// Les types d'évenements à récuperer
+	// Les types d'Ã©venements Ã  rÃ©cuperer
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_mouse_event_source());
 	al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -73,103 +73,78 @@ void Initialisation()
 	al_start_timer(timer);
 
 	// Images de fond
-	background0 = al_load_bitmap("Background00.png");
-	if (!background0)
-		Error("al_load_background0()");
-	background1 = al_load_bitmap("Background11.png");
-	if (!background1)
-		Error("al_load_background1()");
-	background2 = al_load_bitmap("Background22.png");
-	if (!background2)
-		Error("al_load_background2()");
-	background3 = al_load_bitmap("platform.png");
-	if (!background3)
-		Error("al_load_background3()");
+	backgroundmenu = al_load_bitmap("forest1/forest1.png");
+	if (!backgroundmenu)
+		Error("al_load_backgroundmenu()");
 
-	//Images personages
-	Animwait[0] = al_load_bitmap("Animwait1.png");
+	// Images personages
+	Animwait[0] = al_load_bitmap("joueur/Animwait1.png");
 	if (!Animwait[0])
 		Error("Animwait1");
-	Animwait[1] = al_load_bitmap("Animwait2.png");
+	Animwait[1] = al_load_bitmap("joueur/Animwait2.png");
 	if (!Animwait[1])
 		Error("Animwait2");
-	Animwait[2] = al_load_bitmap("Animwait3.png");
+	Animwait[2] = al_load_bitmap("joueur/Animwait3.png");
 	if (!Animwait[2])
 		Error("Animwait3");
-	Animwait[3] = al_load_bitmap("Animwait4.png");
+	Animwait[3] = al_load_bitmap("joueur/Animwait4.png");
 	if (!Animwait[3])
 		Error("Animwait4");
 
-	Animrun[0] = al_load_bitmap("Animrun1.png");
+	Animrun[0] = al_load_bitmap("joueur/Animrun1.png");
 	if (!Animrun[0])
 		Error("Animrun1");
-	Animrun[1] = al_load_bitmap("Animrun2.png");
+	Animrun[1] = al_load_bitmap("joueur/Animrun2.png");
 	if (!Animrun[1])
 		Error("Animrun2");
-	Animrun[2] = al_load_bitmap("Animrun3.png");
+	Animrun[2] = al_load_bitmap("joueur/Animrun3.png");
 	if (!Animrun[2])
 		Error("Animrun3");
-	Animrun[3] = al_load_bitmap("Animrun4.png");
+	Animrun[3] = al_load_bitmap("joueur/Animrun4.png");
 	if (!Animrun[3])
 		Error("Animrun4");
-	Animrun[4] = al_load_bitmap("Animrun5.png");
+	Animrun[4] = al_load_bitmap("joueur/Animrun5.png");
 	if (!Animrun[4])
 		Error("Animrun5");
-	Animrun[5] = al_load_bitmap("Animrun6.png");
+	Animrun[5] = al_load_bitmap("joueur/Animrun6.png");
 	if (!Animrun[5])
 		Error("Animrun6");
-	
-	Animrunl[0] = al_load_bitmap("Animrun1l.png");
-	if (!Animrunl[0])
-		Error("Animrun1l");
-	Animrunl[1] = al_load_bitmap("Animrun2l.png");
-	if (!Animrunl[1])
-		Error("Animrun2l");
-	Animrunl[2] = al_load_bitmap("Animrun3l.png");
-	if (!Animrunl[2])
-		Error("Animrun3l");
-	Animrunl[3] = al_load_bitmap("Animrun4l.png");
-	if (!Animrunl[3])
-		Error("Animrun4l");
-	Animrunl[4] = al_load_bitmap("Animrun5l.png");
-	if (!Animrunl[4])
-		Error("Animrun5l");
-	Animrunl[5] = al_load_bitmap("Animrun6l.png");
-	if (!Animrunl[5])
-		Error("Animrun6l");
 
-	Animjump[0] = al_load_bitmap("Animjump1.png");
+	Animjump[0] = al_load_bitmap("joueur/Animjump1.png");
 	if (!Animjump[0])
 		Error("Animjump1");
-	Animjump[1] = al_load_bitmap("Animjump2.png");
+	Animjump[1] = al_load_bitmap("joueur/Animjump2.png");
 	if (!Animjump[1])
 		Error("Animjump2");
-	Animjump[2] = al_load_bitmap("Animjump3.png");
+	Animjump[2] = al_load_bitmap("joueur/Animjump3.png");
 	if (!Animjump[2])
 		Error("Animjump3");
-	Animjump[3] = al_load_bitmap("Animjump4.png");
+	Animjump[3] = al_load_bitmap("joueur/Animjump4.png");
 	if (!Animjump[3])
 		Error("Animjump4");
-	Animjump[4] = al_load_bitmap("Animjump5.png");
+	Animjump[4] = al_load_bitmap("joueur/Animjump5.png");
 	if (!Animjump[4])
 		Error("Animjump5");
-	Animjump[5] = al_load_bitmap("Animjump6.png");
+	Animjump[5] = al_load_bitmap("joueur/Animjump6.png");
 	if (!Animjump[5])
 		Error("Animjump6");
-	Animjump[6] = al_load_bitmap("Animjump7.png");
+	Animjump[6] = al_load_bitmap("joueur/Animjump7.png");
 	if (!Animjump[6])
 		Error("Animjump7");
-	Animjump[7] = al_load_bitmap("Animjump8.png");
+	Animjump[7] = al_load_bitmap("joueur/Animjump8.png");
 	if (!Animjump[7])
 		Error("Animjump8");
 
-	vignette1 = al_load_bitmap("vignette1.png");
+	vignette1 = al_load_bitmap("forest1/forest1.png");
 	if (!vignette1)
 		Error("al_load_vignette1()");
+	vignette2 = al_load_bitmap("forest2/forest2.png");
+	if (!vignette2)
+		Error("al_load_vignette2()");
+	vignette3 = al_load_bitmap("forest3/forest3.png");
+	if (!vignette3)
+		Error("al_load_vignette3()");
 
-	hitbox = al_load_bitmap("platformhitbox.png");
-	if (!hitbox)
-		Error("al_load_hitbox()");
 	esheet = al_load_bitmap("esheet.bmp");
 	if (!esheet)
 		Error("al_load_esheet()");
@@ -193,13 +168,13 @@ void Initialisation()
 void RunMenu()
 {
 	printf("========arrivee dans menu principal\n"); // debug
-	al_flush_event_queue(queue); // Vider la file d'évènements
+	al_flush_event_queue(queue); // Vider la file d'Ã©vÃ¨nements
 	Menu = 1;
 	
 	while (Menu) {
 		dessiner = 0;
 
-		// Récupérer les évenements
+		// RÃ©cupÃ©rer les Ã©venements
 		ALLEGRO_EVENT event = { 0 };
 		al_wait_for_event(queue, &event);
 
@@ -208,7 +183,7 @@ void RunMenu()
 			printf("touche presse dans boucle principale\n"); // debug
 			switch (event.keyboard.keycode) {
 			case ALLEGRO_KEY_F1: RunOptions(); break;
-			case ALLEGRO_KEY_F2: RunGame(0);  break;
+			case ALLEGRO_KEY_F2: RunGame(1);  break;
 			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
 			}
 		}
@@ -224,7 +199,7 @@ void RunMenu()
 				if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48)) {
 					RunMenuCampagne();
 				}
-				// Bouton bac à sable
+				// Bouton bac Ã  sable
 				if (event.mouse.button == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65)) {
 					RunMenuSandbox();
 				}
@@ -246,11 +221,11 @@ void RunMenu()
 					exit(EXIT_SUCCESS);
 			}
 		}
-		// Evenement souris relâche
+		// Evenement souris relÃ¢che
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			printf("bouton %d relache dans la boucle principale\n", event.mouse.button); // debug
 		}
-		// Evenement souris bougé
+		// Evenement souris bougÃ©
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
 			//printf("x:%4d y:%4d dx:%4d dy:%4d z:%3d w%3d dans boucle principale\n",
 				//event.mouse.x, event.mouse.y, // position hori et verti
@@ -263,7 +238,7 @@ void RunMenu()
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			dessiner = 1;
 		}
-		// Contrôle fin du programme
+		// ContrÃ´le fin du programme
 		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			exit(EXIT_SUCCESS);
 		}
@@ -273,11 +248,8 @@ void RunMenu()
 			al_clear_to_color(SKY);
 
 			// Image de fond
-			al_draw_scaled_bitmap(background0, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
-			al_draw_scaled_bitmap(background1, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
-			al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(backgroundmenu, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 
-			
 			if (SousMenu) {
 				// Bouton retour
 				if (mx >= 0 && my >= 0 && mx <= 60 && my <= 40)
@@ -289,7 +261,7 @@ void RunMenu()
 					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLACK, arial72, WHITE, campagne[language]);
 				else
 					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLUE, arial72, WHITE, campagne[language]);
-				// Bouton bac à sable
+				// Bouton bac Ã  sable
 				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65))
 					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, BLACK, arial72, WHITE, bacasable[language]);
 				else
@@ -313,7 +285,7 @@ void RunMenu()
 					Button(SCREENX * 0.25, SCREENY * 0.59, SCREENX * 0.75, SCREENY * 0.72, LIGHTBLUE, arial72, WHITE, quitter[language]);
 			}
 
-			// Passer le double buffer à l'écran
+			// Passer le double buffer Ã  l'Ã©cran
 			al_flip_display();
 		}
 	}
@@ -322,13 +294,13 @@ void RunMenu()
 void RunMenuCampagne()
 {
 	printf("========arrivee dans menu campagne\n"); // debug
-	al_flush_event_queue(queue); // Vider la file d'évènements
+	al_flush_event_queue(queue); // Vider la file d'Ã©vÃ¨nements
 	MenuCampagne = 1;
 
 	while (MenuCampagne) {
 		dessiner = 0;
 
-		// Récupérer les évenements
+		// RÃ©cupÃ©rer les Ã©venements
 		ALLEGRO_EVENT event = { 0 };
 		al_wait_for_event(queue, &event);
 
@@ -337,7 +309,7 @@ void RunMenuCampagne()
 			printf("touche presse dans boucle campagne\n"); // debug
 			switch (event.keyboard.keycode) {
 			case ALLEGRO_KEY_F1: MenuCampagne = 0; break;
-			case ALLEGRO_KEY_F2: RunGame(0);  break;
+			case ALLEGRO_KEY_F2: RunGame(1);  break;
 			case ALLEGRO_KEY_ESCAPE: exit(EXIT_SUCCESS); break;
 			}
 		}
@@ -351,24 +323,24 @@ void RunMenuCampagne()
 
 			// Bouton niveau 1
 			if (event.mouse.button == 1 && mx >= (SCREENX * 0.04) && my >= (SCREENY * 0.3) && mx <= (SCREENX * 0.3) && my <= (SCREENY * 0.7)) {
-				RunGame(0);
+				RunGame(1);
 			}
 
 			// Bouton niveau 2
 			if (event.mouse.button == 1 && mx >= (SCREENX * 0.37) && my >= (SCREENY * 0.3) && mx <= (SCREENX * 0.63) && my <= (SCREENY * 0.7)) {
-				RunGame(0);
+				RunGame(2);
 			}
 
 			// Bouton niveau 3
 			if (event.mouse.button == 1 && mx >= (SCREENX * 0.7) && my >= (SCREENY * 0.3) && mx <= (SCREENX * 0.96) && my <= (SCREENY * 0.7)) {
-				RunGame(0);
+				RunGame(3);
 			}
 		}
-		// Evenement souris relâche
+		// Evenement souris relÃ¢che
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			printf("bouton %d relache dans la boucle campagne\n", event.mouse.button); // debug
 		}
-		// Evenement souris bougé
+		// Evenement souris bougÃ©
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
 			//printf("x:%4d y:%4d dx:%4d dy:%4d z:%3d w%3d dans boucle principale\n",
 				//event.mouse.x, event.mouse.y, // position hori et verti
@@ -381,7 +353,7 @@ void RunMenuCampagne()
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			dessiner = 1;
 		}
-		// Contrôle fin du programme
+		// ContrÃ´le fin du programme
 		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			exit(EXIT_SUCCESS);
 		}
@@ -391,14 +363,12 @@ void RunMenuCampagne()
 			al_clear_to_color(SKY);
 
 			// Image de fond
-			al_draw_scaled_bitmap(background0, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
-			al_draw_scaled_bitmap(background1, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
-			al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(backgroundmenu, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 
 			// Rectangle gris
 			al_draw_filled_rectangle(0, SCREENY * 0.2, SCREENX, SCREENY * 0.8, GREY);
 
-			// Carré gauche
+			// CarrÃ© gauche
 			if (mx >= SCREENX * 0.04 && my >= SCREENY * 0.3 && mx <= SCREENX * 0.3 && my <= SCREENY * 0.7)
 				al_draw_filled_rectangle(SCREENX * 0.04, SCREENY * 0.3, SCREENX * 0.3, SCREENY * 0.7, VLIGHTGREY);
 			else 
@@ -407,22 +377,22 @@ void RunMenuCampagne()
 			al_draw_scaled_bitmap(vignette1, 0, 0, 1920, 1080, SCREENX * 0.05, SCREENY * 0.31, SCREENX * 0.24, SCREENY * 0.22, 0);
 			al_draw_textf(arial72, BLACK, SCREENX * 0.17, SCREENY * 0.55, ALLEGRO_ALIGN_CENTER, "1");
 			
-			// Carré milieu
+			// CarrÃ© milieu
 			if (mx >= SCREENX * 0.37 && my >= SCREENY * 0.3 && mx <= SCREENX * 0.63 && my <= SCREENY * 0.7)
 				al_draw_filled_rectangle(SCREENX * 0.37, SCREENY * 0.3, SCREENX * 0.63, SCREENY * 0.7, VLIGHTGREY);
 			else
 				al_draw_filled_rectangle(SCREENX * 0.37, SCREENY * 0.3, SCREENX * 0.63, SCREENY * 0.7, LIGHTGREY);
 
-			al_draw_scaled_bitmap(vignette1, 0, 0, 1920, 1080, SCREENX * 0.38, SCREENY * 0.31, SCREENX * 0.24, SCREENY * 0.22, 0);
+			al_draw_scaled_bitmap(vignette2, 0, 0, 1920, 1080, SCREENX * 0.38, SCREENY * 0.31, SCREENX * 0.24, SCREENY * 0.22, 0);
 			al_draw_textf(arial72, BLACK, SCREENX * 0.5, SCREENY * 0.55, ALLEGRO_ALIGN_CENTER, "2");
 			
-			// Carré droit
+			// CarrÃ© droit
 			if (mx >= SCREENX * 0.7 && my >= SCREENY * 0.3 && mx <= SCREENX * 0.96 && my <= SCREENY * 0.7)
 				al_draw_filled_rectangle(SCREENX * 0.7, SCREENY * 0.3, SCREENX * 0.96, SCREENY * 0.7, VLIGHTGREY);
 			else
 				al_draw_filled_rectangle(SCREENX * 0.7, SCREENY * 0.3, SCREENX * 0.96, SCREENY * 0.7, LIGHTGREY);
 
-			al_draw_scaled_bitmap(vignette1, 0, 0, 1920, 1080, SCREENX * 0.71, SCREENY * 0.31, SCREENX * 0.24, SCREENY * 0.22, 0);
+			al_draw_scaled_bitmap(vignette3, 0, 0, 1920, 1080, SCREENX * 0.71, SCREENY * 0.31, SCREENX * 0.24, SCREENY * 0.22, 0);
 			al_draw_textf(arial72, BLACK, SCREENX * 0.83, SCREENY * 0.55, ALLEGRO_ALIGN_CENTER, "3");
 
 			// Bouton retour
@@ -431,7 +401,7 @@ void RunMenuCampagne()
 			else
 				Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
 
-			// Passer le double buffer à l'écran
+			// Passer le double buffer Ã  l'Ã©cran
 			al_flip_display();
 		}
 	}
@@ -440,13 +410,13 @@ void RunMenuCampagne()
 void RunMenuSandbox()
 {
 	printf("========arrivee dans menu sandbox\n"); // debug
-	al_flush_event_queue(queue); // Vider la file d'évènements
+	al_flush_event_queue(queue); // Vider la file d'Ã©vÃ¨nements
 	MenuSandbox = 1;
 
 	while (MenuSandbox) {
 		dessiner = 0;
 
-		// Récupérer les évenements
+		// RÃ©cupÃ©rer les Ã©venements
 		ALLEGRO_EVENT event = { 0 };
 		al_wait_for_event(queue, &event);
 
@@ -463,23 +433,49 @@ void RunMenuSandbox()
 		// Evenement souris appuit
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			printf("bouton %d presse dans la boucle sandbox\n", event.mouse.button); // debug
-			// Selection case à remplir
-			for (int i = 0; i < 7; i++)
-				sboptions[i] = 0;
-			if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.26) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.31))
-				sboptions[0] = 1;
-			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.32) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.37))
-				sboptions[1] = 1;
-			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.38) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.43))
-				sboptions[2] = 1;
-			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.44) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.49))
-				sboptions[3] = 1;
-			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.50) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.55))
-				sboptions[4] = 1;
-			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.56) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.61))
-				sboptions[5] = 1;
-			else if (event.mouse.button == 1 && mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.62) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.67))
-				sboptions[6] = 1;
+			// Selection case Ã  remplir
+			int y1, y2, y3, y4;
+			for (int i = 0; i < 7; i++) {
+				// 1/0.26 = 3,846
+				y1 = SCREENY * 1000 / 3846 + SCREENY * i * 6 / 100;
+				y2 = SCREENY * 1000 / 3521 + SCREENY * i * 6 / 100;
+				y3 = SCREENY * 1000 / 3496 + SCREENY * i * 6 / 100;
+				y4 = SCREENY * 1000 / 3225 + SCREENY * i * 6 / 100;
+
+				// Bouton plus
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.73) && my >= y1 && mx <= (SCREENX * 0.77) && my <= y2) {
+					if (sbplus[0][i] == 57 && sbplus[1][i] == 57)
+						sbplus[0][i] = 56;
+
+					sbplus[0][i] += 1;
+
+					if (sbplus[0][i] > 57) {
+						sbplus[1][i] += 1;
+						sbplus[0][i] = 48;
+					}
+
+					sbplus[2][i] = sbplus[0][i] - 48 + (sbplus[1][i] - 48) * 10;
+				}
+
+				// Bouton moins
+				if (event.mouse.button == 1 && mx >= (SCREENX * 0.73) && my >= y3 && mx <= (SCREENX * 0.77) && my <= y4) {
+					if (sbplus[0][i] == 48 && sbplus[1][i] == 48)
+						sbplus[0][i] = 49;
+
+					sbplus[0][i] -= 1;
+
+					if (sbplus[0][i] < 48) {
+						sbplus[1][i] -= 1;
+						sbplus[0][i] = 57;
+					}
+
+					sbplus[2][i] = sbplus[0][i] - 48 + (sbplus[1][i] - 48) * 10;
+				}
+				if (sbplus[0][6] > 51)
+					sbplus[0][6] = 51;
+				if (sbplus[0][6] < 49)
+					sbplus[0][6] = 49;
+			}
 
 			// Bouton retour
 			if (event.mouse.button == 1 && mx >= 0 && my >= 0 && mx <= 60 && my <= 40) {
@@ -490,11 +486,11 @@ void RunMenuSandbox()
 				RunGame(0);
 			}
 		}
-		// Evenement souris relâche
+		// Evenement souris relÃ¢che
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			printf("bouton %d relache dans la boucle sandbox\n", event.mouse.button); // debug
 		}
-		// Evenement souris bougé
+		// Evenement souris bougÃ©
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
 			//printf("x:%4d y:%4d dx:%4d dy:%4d z:%3d w%3d dans boucle principale\n",
 				//event.mouse.x, event.mouse.y, // position hori et verti
@@ -507,7 +503,7 @@ void RunMenuSandbox()
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			dessiner = 1;
 		}
-		// Contrôle fin du programme
+		// ContrÃ´le fin du programme
 		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			exit(EXIT_SUCCESS);
 		}
@@ -517,87 +513,54 @@ void RunMenuSandbox()
 			al_clear_to_color(SKY);
 
 			// Image de fond
-			al_draw_scaled_bitmap(background0, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
-			al_draw_scaled_bitmap(background1, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
-			al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(backgroundmenu, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 
 			// Rectangle gris
 			al_draw_filled_rectangle(SCREENX * 0.2, SCREENY * 0.2, SCREENX * 0.8, SCREENY * 0.8, LIGHTGREY);
 
 			// Texte
-			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.26, ALLEGRO_ALIGN_LEFT, "Etoiles");
-			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.32, ALLEGRO_ALIGN_LEFT, "Ennemis");
-			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.38, ALLEGRO_ALIGN_LEFT, "Temps protection");
-			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.44, ALLEGRO_ALIGN_LEFT, "Vies");
-			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.50, ALLEGRO_ALIGN_LEFT, "Gravite");
-			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.56, ALLEGRO_ALIGN_LEFT, "Puissance de saut");
-			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.62, ALLEGRO_ALIGN_LEFT, "Tick");
-
-			// Etoiles
-			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.26) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.31))
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.26, SCREENX * 0.77, SCREENY * 0.31, VLIGHTGREY);
-			else
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.26, SCREENX * 0.77, SCREENY * 0.31, WHITE);
-
-			if (sboptions[0])
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.26, SCREENX * 0.56, SCREENY * 0.31, LIGHTBLUE);
-
-			// Ennemis
-			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.32) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.37))
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.32, SCREENX * 0.77, SCREENY * 0.37, VLIGHTGREY);
-			else
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.32, SCREENX * 0.77, SCREENY * 0.37, WHITE);
-
-			if (sboptions[1])
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.32, SCREENX * 0.56, SCREENY * 0.37, LIGHTBLUE);
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.26, ALLEGRO_ALIGN_LEFT, etoile[language]);
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.32, ALLEGRO_ALIGN_LEFT, ennemi[language]);
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.38, ALLEGRO_ALIGN_LEFT, tmpsprotec[language]);
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.44, ALLEGRO_ALIGN_LEFT, vie[language]);
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.50, ALLEGRO_ALIGN_LEFT, gravite[language]);
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.56, ALLEGRO_ALIGN_LEFT, psaut[language]);
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.62, ALLEGRO_ALIGN_LEFT, niveau[language]);
 			
-			// Temps protection
-			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.38) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.43))
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.38, SCREENX * 0.77, SCREENY * 0.43, VLIGHTGREY);
-			else
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.38, SCREENX * 0.77, SCREENY * 0.43, WHITE);
+			int y1, y2, y3, y4;
+			for (int i = 0; i < 7; i++) {
+				// 1/0.26 = 3,846
+				y1 = SCREENY * 1000 / 3846 + SCREENY * i * 6 / 100;
+				y2 = SCREENY * 1000 / 3521 + SCREENY * i * 6 / 100;
+				y3 = SCREENY * 1000 / 3496 + SCREENY * i * 6 / 100;
+				y4 = SCREENY * 1000 / 3225 + SCREENY * i * 6 / 100;
 
-			if (sboptions[2])
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.38, SCREENX * 0.56, SCREENY * 0.43, LIGHTBLUE);
-			
-			// Vies
-			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.44) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.49))
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.44, SCREENX * 0.77, SCREENY * 0.49, VLIGHTGREY);
-			else
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.44, SCREENX * 0.77, SCREENY * 0.49, WHITE);
+				// Fond blanc
+				if (mx >= (SCREENX * 0.55) && my >= y1 && mx <= (SCREENX * 0.77) && my <= y4)
+					al_draw_filled_rectangle(SCREENX * 0.55, y1, SCREENX * 0.77, y4, VLIGHTGREY);
+				else
+					al_draw_filled_rectangle(SCREENX * 0.55, y1, SCREENX * 0.77, y4, WHITE);
 
-			if (sboptions[3])
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.44, SCREENX * 0.56, SCREENY * 0.49, LIGHTBLUE);
-			
-			// Gravitée
-			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.50) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.55))
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.50, SCREENX * 0.77, SCREENY * 0.55, VLIGHTGREY);
-			else
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.50, SCREENX * 0.77, SCREENY * 0.55, WHITE);
+				// Texte
+				char a = (char)sbplus[1][i];
+				char b = (char)sbplus[0][i];
+				if (sbplus[1][i] != 48)
+					al_draw_textf(arial32, BLACK, SCREENX * 0.70, y1, ALLEGRO_ALIGN_RIGHT, &a);
 
-			if (sboptions[4])
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.50, SCREENX * 0.56, SCREENY * 0.55, LIGHTBLUE);
+				al_draw_textf(arial32, BLACK, SCREENX * 0.72, y1, ALLEGRO_ALIGN_RIGHT, &b);
 
-			// Puissance de saut
-			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.56) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.61))
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.56, SCREENX * 0.77, SCREENY * 0.61, VLIGHTGREY);
-			else
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.56, SCREENX * 0.77, SCREENY * 0.61, WHITE);
+				// Plus
+				if (mx >= (SCREENX * 0.73) && my >= y1 && mx <= (SCREENX * 0.77) && my <= y2)
+					Button(SCREENX * 0.73, y1, SCREENX * 0.77, y2, BLACK, arial22, WHITE, "+");
+				else
+					Button(SCREENX * 0.73, y1, SCREENX * 0.77, y2, LIGHTERGREY, arial22, BLACK, "+");
 
-			if (sboptions[5])
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.56, SCREENX * 0.56, SCREENY * 0.61, LIGHTBLUE);
-
-			// Tick
-			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.62) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.67))
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.62, SCREENX * 0.77, SCREENY * 0.67, VLIGHTGREY);
-			else
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.62, SCREENX * 0.77, SCREENY * 0.67, WHITE);
-
-			if (sboptions[6])
-				al_draw_filled_rectangle(SCREENX * 0.55, SCREENY * 0.62, SCREENX * 0.56, SCREENY * 0.67, LIGHTBLUE);
-
-			//int memory = event.keyboard.keycode;
-			//al_draw_textf(arial32, BLACK, SCREENX * 0.60, SCREENY * 0.26, ALLEGRO_ALIGN_LEFT, 1);
+				// Moins
+				if (mx >= (SCREENX * 0.73) && my >= y3 && mx <= (SCREENX * 0.77) && my <= y4)
+					Button(SCREENX * 0.73, y3, SCREENX * 0.77, y4, BLACK, arial22, WHITE, "-");
+				else
+					Button(SCREENX * 0.73, y3, SCREENX * 0.77, y4, LIGHTERGREY, arial22, BLACK, "-");
+			}
 
 			// Bouton commencer
 			if (mx >= (SCREENX * 0.55) && my >= (SCREENY * 0.70) && mx <= (SCREENX * 0.77) && my <= (SCREENY * 0.77))
@@ -611,7 +574,7 @@ void RunMenuSandbox()
 			else
 				Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
 
-			// Passer le double buffer à l'écran
+			// Passer le double buffer Ã  l'Ã©cran
 			al_flip_display();
 		}
 	}
@@ -624,13 +587,13 @@ void RunMenuSandbox()
 void RunOptions()
 {
 	printf("========arrivee dans sous menu\n"); // debug
-	al_flush_event_queue(queue); // Vider la file d'évènements
+	al_flush_event_queue(queue); // Vider la file d'Ã©vÃ¨nements
 	Options = 1;
 
 	while (Options) {
 		dessiner = 0;		
 		
-		// Récupérer les évenements
+		// RÃ©cupÃ©rer les Ã©venements
 		ALLEGRO_EVENT event = { 0 };
 		al_wait_for_event(queue, &event);
 
@@ -663,13 +626,13 @@ void RunOptions()
 				}
 			}
 			else {
-				// Bouton crédit
+				// Bouton crÃ©dit
 				if (event.mouse.button == 1 && mx >= (SCREENX * 0.405) && my >= (SCREENY * 0.66) && mx <= (SCREENX * 0.605) && my <= (SCREENY * 0.76)) {
 					Credit = 1;
 					BSelectDisplay = 0;
 					BSelectDisplay2 = 0;
 				}
-				// Menu déroulant résolution
+				// Menu dÃ©roulant rÃ©solution
 				if (event.mouse.button == 1 && mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.35)) {
 					if (BSelectDisplay) {
 						BSelectDisplay = 0;
@@ -710,7 +673,7 @@ void RunOptions()
 					}
 				}
 
-				// Menu déroulant langage
+				// Menu dÃ©roulant langage
 				if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.35)) {
 					if (BSelectDisplay2) {
 						BSelectDisplay2 = 0;
@@ -720,7 +683,7 @@ void RunOptions()
 						BSelectDisplay = 0;
 					}
 				}
-				// Français
+				// FranÃ§ais
 				if (event.mouse.button == 1 && mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.45)) {
 					if (BSelectDisplay2) {
 						language = 0;
@@ -736,11 +699,11 @@ void RunOptions()
 				}
 			}
 		}
-		// Evenement souris relâche
+		// Evenement souris relÃ¢che
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			printf("bouton %d relache dans le sous menu\n", event.mouse.button);
 		}
-		// Evenement souris bougé
+		// Evenement souris bougÃ©
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
 			//printf("x:%4d y:%4d dx:%4d dy:%4d z:%3d w%3d dans le sous menu\n",
 				//event.mouse.x, event.mouse.y, // position hori et verti
@@ -753,7 +716,7 @@ void RunOptions()
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			dessiner = 1;
 		}
-		// Contrôle fin du programme
+		// ContrÃ´le fin du programme
 		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			exit(EXIT_SUCCESS);
 		}
@@ -763,9 +726,7 @@ void RunOptions()
 			al_clear_to_color(SKY);
 
 			// Image de fond
-			al_draw_scaled_bitmap(background0, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
-			al_draw_scaled_bitmap(background1, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
-			al_draw_scaled_bitmap(background2, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
+			al_draw_scaled_bitmap(backgroundmenu, 0, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 
 			// Rectangle gris au milieu
 			al_draw_filled_rectangle(SCREENX * 0.2, 0, SCREENX * 0.8, SCREENY, GREY);
@@ -776,9 +737,9 @@ void RunOptions()
 			else
 				Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
 
-			// Menu déroulant résolution
+			// Menu dÃ©roulant rÃ©solution
 			if (BSelectDisplay == 1) {
-				// résolution
+				// rÃ©solution
 				if (mx >= (SCREENX * 0.26) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.47) && my <= (SCREENY * 0.35))
 					Button(SCREENX * 0.26, SCREENY * 0.25, SCREENX * 0.47, SCREENY * 0.35, BLACK, arial32, WHITE, resolution[language]);
 				else
@@ -806,14 +767,14 @@ void RunOptions()
 					Button(SCREENX * 0.26, SCREENY * 0.25, SCREENX * 0.47, SCREENY * 0.35, WHITE, arial32, BLACK, resolution[language]);
 			}
 
-			// Menu déroulant langage
+			// Menu dÃ©roulant langage
 			if (BSelectDisplay2 == 1) {
 				// Langage
 				if (mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.25) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.35))
 					Button(SCREENX * 0.53, SCREENY * 0.25, SCREENX * 0.74, SCREENY * 0.35, BLACK, arial32, WHITE, lang[language]);
 				else
 					Button(SCREENX * 0.53, SCREENY * 0.25, SCREENX * 0.74, SCREENY * 0.35, WHITE, arial32, BLACK, lang[language]);
-				// Français
+				// FranÃ§ais
 				if (mx >= (SCREENX * 0.53) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.74) && my <= (SCREENY * 0.45))
 					Button(SCREENX * 0.53, SCREENY * 0.35, SCREENX * 0.74, SCREENY * 0.45, LIGHTERGREY, arial32, LIGHTBLUE, "Francais");
 				else
@@ -831,14 +792,14 @@ void RunOptions()
 					Button(SCREENX * 0.53, SCREENY * 0.25, SCREENX * 0.74, SCREENY * 0.35, WHITE, arial32, BLACK, lang[language]);
 			}
 
-			// Bouton crédit
+			// Bouton crÃ©dit
 			if ( Credit == 0 && mx >= (SCREENX * 0.405) && my >= (SCREENY * 0.66) && mx <= (SCREENX * 0.605) && my <= (SCREENY * 0.76))
 				Button(SCREENX * 0.405, SCREENY * 0.66, SCREENX * 0.605, SCREENY * 0.76, BLACK, arial32, WHITE, "Credit");
 			else
 				Button(SCREENX * 0.405, SCREENY * 0.66, SCREENX * 0.605, SCREENY * 0.76, WHITE, arial32, BLACK, "Credit");
 		
 			if (Credit) {
-				// Rectangle des crédits au milieu
+				// Rectangle des crÃ©dits au milieu
 				al_draw_filled_rectangle(SCREENX * 0.1, SCREENY * 0.35, SCREENX * 0.9, SCREENY * 0.7, LIGHTGREY);
 
 				// Bouton fermer
@@ -853,7 +814,7 @@ void RunOptions()
 				al_draw_textf(arial22, BLACK, SCREENX * 0.5, SCREENY * 0.6, ALLEGRO_ALIGN_CENTER, txtcredit3[language]);
 			}
 
-			// Passer le double buffer à l'écran
+			// Passer le double buffer Ã  l'Ã©cran
 			al_flip_display();
 		}
 	}
@@ -865,7 +826,10 @@ void RunOptions()
 
 void ResetGame()
 {
-	// Remettre aux valeurs par défaut les variables
+	// Remettre aux valeurs par dÃ©faut les variables
+	PERSONNAGEMAX = 10;
+	ETOILEMAX = 3;
+	TICK = 30;
 	life = 3;
 	star = ETOILEMAX;
 	Death = 0;
@@ -881,7 +845,6 @@ void ResetGame()
 	dx0 = 0;
 	dx1 = 0;
 	dx2 = 0;
-	dx3 = 0;
 
 	for (int i = 0; i < PERSONNAGEMAX; i++)
 		personnages[i] = CreatePersonnage(RED);
@@ -896,15 +859,156 @@ void ResetGame()
 
 void RunGame(int niveau)
 {
-	ResetGame();
+	switch (niveau) {
+	case 0: // sandbox
+		ETOILEMAX = sbplus[2][0];
+		PERSONNAGEMAX = sbplus[2][1];
+		protect = (float)sbplus[2][2];
+		life = sbplus[2][3];
+		gravity = (float)(sbplus[2][4] * -1);
+		dgravity = (float)(sbplus[2][4] * 0.1);
+		pulse = (float)sbplus[2][5];
+		dpulse = (float)sbplus[2][5];
+		fond = sbplus[2][6];
+
+		star = ETOILEMAX;
+		Death = 0;
+		starprotect = 0.00;
+		jump = 0.00;
+		HitboxDisplay = 0;
+		ESheetDisplay = 0;
+		x = SCREENXD + 100; // Position du joueur
+		y = SCREENYD + 100;
+		dx0 = 0;
+		dx1 = 0;
+		dx2 = 0;
+		dx3 = 0;
+
+		for (int i = 0; i < PERSONNAGEMAX; i++)
+			personnages[i] = CreatePersonnage(RED);
+
+		for (int i = 0; i < ETOILEMAX; i++)
+			personnagesy[i] = CreatePersonnage(YELLOW);
+
+		switch (fond) {
+		case 1: // niveau 1
+			background0 = al_load_bitmap("forest1/Layers/0.png");
+			if (!background0)
+				Error("al_load_background0()");
+			background1 = al_load_bitmap("forest1/Layers/1.png");
+			if (!background1)
+				Error("al_load_background1()");
+			background2 = al_load_bitmap("forest1/Layers/2.png");
+			if (!background2)
+				Error("al_load_background2()");
+			background3 = al_load_bitmap("forest1/Layers/platform.png");
+			if (!background3)
+				Error("al_load_background3()");
+			hitbox = al_load_bitmap("forest1/Layers/platformhitbox.png");
+			if (!hitbox)
+				Error("al_load_hitbox()");
+			break;
+		case 2: // niveau 1
+			background0 = al_load_bitmap("forest2/Layers/0.png");
+			if (!background0)
+				Error("al_load_background0()");
+			background1 = al_load_bitmap("forest2/Layers/1.png");
+			if (!background1)
+				Error("al_load_background1()");
+			background2 = al_load_bitmap("forest2/Layers/2.png");
+			if (!background2)
+				Error("al_load_background2()");
+			background3 = al_load_bitmap("forest2/Layers/platform.png");
+			if (!background3)
+				Error("al_load_background3()");
+			hitbox = al_load_bitmap("forest2/Layers/platformhitbox.png");
+			if (!hitbox)
+				Error("al_load_hitbox()");
+			break;
+		case 3: // niveau 1
+			background0 = al_load_bitmap("forest3/Layers/0.png");
+			if (!background0)
+				Error("al_load_background0()");
+			background1 = al_load_bitmap("forest3/Layers/1.png");
+			if (!background1)
+				Error("al_load_background1()");
+			background2 = al_load_bitmap("forest3/Layers/2.png");
+			if (!background2)
+				Error("al_load_background2()");
+			background3 = al_load_bitmap("forest3/Layers/platform.png");
+			if (!background3)
+				Error("al_load_background3()");
+			hitbox = al_load_bitmap("forest3/Layers/platformhitbox.png");
+			if (!hitbox)
+				Error("al_load_hitbox()");
+			break;
+		}
+		break;
+		
+	case 1: // niveau 1
+		ResetGame();
+		background0 = al_load_bitmap("forest1/Layers/0.png");
+		if (!background0)
+			Error("al_load_background0()");
+		background1 = al_load_bitmap("forest1/Layers/1.png");
+		if (!background1)
+			Error("al_load_background1()");
+		background2 = al_load_bitmap("forest1/Layers/2.png");
+		if (!background2)
+			Error("al_load_background2()");
+		background3 = al_load_bitmap("forest1/Layers/platform.png");
+		if (!background3)
+			Error("al_load_background3()");
+		hitbox = al_load_bitmap("forest1/Layers/platformhitbox.png");
+		if (!hitbox)
+			Error("al_load_hitbox()");
+		break;
+	case 2: // niveau 2
+		ResetGame();
+		background0 = al_load_bitmap("forest2/Layers/0.png");
+		if (!background0)
+			Error("al_load_background0()");
+		background1 = al_load_bitmap("forest2/Layers/1.png");
+		if (!background1)
+			Error("al_load_background1()");
+		background2 = al_load_bitmap("forest2/Layers/2.png");
+		if (!background2)
+			Error("al_load_background2()");
+		background3 = al_load_bitmap("forest2/Layers/platform.png");
+		if (!background3)
+			Error("al_load_background3()");
+		hitbox = al_load_bitmap("forest2/Layers/platformhitbox.png");
+		if (!hitbox)
+			Error("al_load_hitbox()");
+		break;
+	case 3: // niveau 3
+		ResetGame();
+		background0 = al_load_bitmap("forest3/Layers/0.png");
+		if (!background0)
+			Error("al_load_background0()");
+		background1 = al_load_bitmap("forest3/Layers/1.png");
+		if (!background1)
+			Error("al_load_background1()");
+		background2 = al_load_bitmap("forest3/Layers/2.png");
+		if (!background2)
+			Error("al_load_background2()");
+		background3 = al_load_bitmap("forest3/Layers/platform.png");
+		if (!background3)
+			Error("al_load_background3()");
+		hitbox = al_load_bitmap("forest3/Layers/platformhitbox.png");
+		if (!hitbox)
+			Error("al_load_hitbox()");
+		break;
+	}
+
 	printf("========arrivee dans jeu\n"); // debug
-	al_flush_event_queue(queue); // Vider la file d'évènements
+	al_flush_event_queue(queue); // Vider la file d'Ã©vÃ¨nements
 	Game = 1;
 	
 	while (Game) {
 		dessiner = 0;
 
-		// Récupération des événements
+		// RÃ©cupÃ©ration des Ã©vÃ©nements
 		ALLEGRO_EVENT event;
 		al_wait_for_event(queue, &event);
 
@@ -935,7 +1039,7 @@ void RunGame(int niveau)
 			}
 			printf("%d presse dans boucle jeu\n", event.keyboard.keycode); // debug
 		}
-		// Evenement clavier relâche
+		// Evenement clavier relÃ¢che
 		else if (event.type == ALLEGRO_EVENT_KEY_UP) {
 			switch (event.keyboard.keycode)
 			{
@@ -964,19 +1068,22 @@ void RunGame(int niveau)
 			if (protect > 0.00)
 				protect -= 0.02;
 
-			// protection étoile
+			// protection Ã©toile
 			if (starprotect > 0.00)
 				starprotect -= 0.02;
 
-			// gravitée/saut
+			// gravitÃ©e/saut
 			// en train de sauter?
 			if (jump == 0)
 			{
 				// est au sol?
 				if (c_down == 0) {
 					y -= gravity;
-					gravity -= 0.2;
-					// empêche de sortir de l'écran
+					if (niveau == 0)
+						gravity -= dgravity;
+					else
+						gravity -= 0.2;
+					// empÃªche de sortir de l'Ã©cran
 					if (y > SCREENY-80)
 						y = SCREENY-80;
 				}
@@ -998,7 +1105,7 @@ void RunGame(int niveau)
 				}
 			}
 
-			// Contrôles
+			// ContrÃ´les
 			if (Death == 0) {
 				if (key[KEY_RIGHT] == 1 && c_right == 0) {
 					dx0 += 2;
@@ -1008,7 +1115,10 @@ void RunGame(int niveau)
 				}
 				if (key[KEY_UP] == 1 && c_down == 1 && c_up == 0) {
 					jump = 1.00;
-					pulse = 10.00;
+					if (niveau == 0)
+						pulse = dpulse;
+					else
+						pulse = 10.00;
 				}
 				if (key[KEY_LEFT] == 1 && c_left == 0) {
 					dx0 -= 2;
@@ -1017,7 +1127,7 @@ void RunGame(int niveau)
 					dx3 -= 10;
 				}
 				if (key[KEY_DOWN] == 1 && c_down == 0) {
-					y += 10;
+					y += 8;
 				}
 			}
 			Collision(&x, &y);
@@ -1034,14 +1144,14 @@ void RunGame(int niveau)
 			if (event.mouse.button == 1 && Death == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48)) {
 				x = SCREENXD;
 				y = SCREENYD; // Bouton rejouer
-				ResetGame();
+				RunGame(niveau);
 			}
 			if (event.mouse.button == 1 && Death == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65)) {
 				Game = 0;
 				Menu = 1; // Bouton menu principal
 			}
 		}
-		// Evenement souris relâche
+		// Evenement souris relÃ¢che
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			printf("bouton %d relache dans le jeu\n", event.mouse.button); // debug
 		}
@@ -1054,7 +1164,7 @@ void RunGame(int niveau)
 			mx = event.mouse.x;
 			my = event.mouse.y;
 		}
-		// Contrôle fin du programme
+		// ContrÃ´le fin du programme
 		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			exit(EXIT_SUCCESS);
 		}
@@ -1069,8 +1179,8 @@ void RunGame(int niveau)
 			al_draw_scaled_bitmap(background1, dx1, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 			al_draw_scaled_bitmap(background2, dx2, 0, 1920, 1080, 0, 0, SCREENX, SCREENY, 0);
 			al_draw_scaled_bitmap(background3, dx3, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
-			
-			//défilement infini des backgrounds
+
+			//dÃ©filement infini des backgrounds
 			if (dx0 > 1920) {
 				dx0 = 0;
 			}
@@ -1091,12 +1201,12 @@ void RunGame(int niveau)
 			if (dx2 < 0) {
 				dx2 = 1920;
 			}
-			
+
 			// Image des hitbox obstacles/sol
 			if (HitboxDisplay == 1)
 				al_draw_scaled_bitmap(hitbox, dx3, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 
-			// Image des hitbox d'ennemis/étoiles
+			// Image des hitbox d'ennemis/Ã©toiles
 			if (ESheetDisplay == 1)
 				al_draw_scaled_bitmap(esheet, dx3, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 
@@ -1114,7 +1224,7 @@ void RunGame(int niveau)
 			if (life >= 6)
 				al_draw_bitmap(or, 350, 0, 0);
 
-			// Nettoyage des anciennes images d'ennemis/étoiles
+			// Nettoyage des anciennes images d'ennemis/Ã©toiles
 			al_set_target_bitmap(esheet);
 			al_clear_to_color(BLACK);
 			al_set_target_backbuffer(al_get_current_display());
@@ -1124,7 +1234,7 @@ void RunGame(int niveau)
 				AvancePersonnage(personnages[i]);
 				AffichePersonnage(personnages[i]);
 			}
-			// Affichage des étoiles
+			// Affichage des Ã©toiles
 			for (int i = 0; i < star; i++) {
 				AvancePersonnage(personnagesy[i]);
 				AffichePersonnage(personnagesy[i]);
@@ -1169,13 +1279,14 @@ void RunGame(int niveau)
 				if (key[KEY_RIGHT] == 1 && c_right == 0) {
 					//La vitesse entre les sprits
 					a += 1;
-					if (a>3){
+					if (a > 3) {
 						b += 1;
 						if (b > 5) {
 							b = 0;
 						}
 						a = 0;
 					}
+					orientation = 1;
 					al_draw_bitmap(Animrun[b], x + 2, y - 2, 0);
 				}
 				else if (key[KEY_LEFT] == 1 && c_left == 0) {
@@ -1187,9 +1298,8 @@ void RunGame(int niveau)
 						}
 						a = 0;
 					}
-					if (y < 2000) {
-						al_draw_bitmap(Animrunl[b], x + 2, y - 2, 0);
-					}
+					orientation = 0;
+					al_draw_bitmap(Animrun[b], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
 				}
 				else if (jump > 0) {
 					a += 1;
@@ -1200,7 +1310,10 @@ void RunGame(int niveau)
 						}
 						a = 0;
 					}
-					al_draw_bitmap(Animjump[b], x + 2, y - 2, 0);
+					if (orientation)
+						al_draw_bitmap(Animjump[b], x + 2, y - 2, 0);
+					else
+						al_draw_bitmap(Animjump[b], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
 				}
 				if (key[KEY_DOWN] == 0 && key[KEY_UP] == 0 && key[KEY_LEFT] == 0 && key[KEY_RIGHT] == 0 && jump <= 0)
 				{
@@ -1212,11 +1325,14 @@ void RunGame(int niveau)
 						}
 						a = 0;
 					}
-					al_draw_bitmap(Animwait[b], x+2, y-2, 0);
+					if (orientation)
+						al_draw_bitmap(Animwait[b], x + 2, y - 2, 0);
+					else
+						al_draw_bitmap(Animwait[b], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
 				}
 			}
 
-			// Passer le double buffer à l'écran
+			// Passer le double buffer Ã  l'Ã©cran
 			al_flip_display();
 		}
 	}
@@ -1228,7 +1344,7 @@ void RunGame(int niveau)
 
 void Destroy()
 {
-	// Libérer la mémoire allouée
+	// LibÃ©rer la mÃ©moire allouÃ©e
 	al_destroy_event_queue(queue);
 	al_destroy_font(arial32);
 	al_destroy_font(arial72);
@@ -1248,7 +1364,7 @@ void Destroy()
 
 void Error(char* txt)
 {
-	// Afficher une fenêtre d'erreur et quitter le programme
+	// Afficher une fenÃªtre d'erreur et quitter le programme
 	ALLEGRO_DISPLAY* d;
 	d = al_is_system_installed() ? al_get_current_display() : NULL;
 	al_show_native_message_box(d, "Error", txt, NULL, NULL, 0);
@@ -1271,7 +1387,7 @@ void Kill()
 	if (life == 0) {
 		Death = 1;
 	}
-	// Enlever une vie et mettre une protection pour éviter d'être touché plusieures fois en 1 seconde
+	// Enlever une vie et mettre une protection pour Ã©viter d'Ãªtre touchÃ© plusieures fois en 1 seconde
 	else if (protect <= 0.00) {
 		life -= 1;
 		protect = 2.00;
@@ -1281,20 +1397,20 @@ void Kill()
 void Collision(int* x, int* y)
 {
 	// Collisions sol/obstacles 
-	// Objectif autoriser le déplacement ou pas
+	// Objectif autoriser le dÃ©placement ou pas
 	ALLEGRO_COLOR color_down = al_get_pixel(hitbox, *x + 10+dx3, *y + 21);
 	ALLEGRO_COLOR color_up = al_get_pixel(hitbox, *x + 10+dx3, *y - 15);
 	ALLEGRO_COLOR color_right = al_get_pixel(hitbox, *x + 21+dx3, *y + 10);
 	ALLEGRO_COLOR color_left = al_get_pixel(hitbox, *x - 1+dx3, *y + 10);
 
 	unsigned char r, g, b;
-	
+
 	al_unmap_rgb(color_down, &r, &g, &b);
 	c_down = 0;
 	if (r == 0 && g == 128 && b == 0) {
 		c_down = 1;
 	}
-	printf("%d,%d,%d\n", r, g, b); // debug
+	//printf("%d,%d,%d\n", r, g, b); // debug
 
 	al_unmap_rgb(color_up, &r, &g, &b);
 	c_up = 0;
@@ -1314,7 +1430,7 @@ void Collision(int* x, int* y)
 		c_left = 1;
 	}
 
-	// Objectif détecter la collision avec un ennemi
+	// Objectif dÃ©tecter la collision avec un ennemi
 	color_down = al_get_pixel(esheet, *x + 10, *y + 21);
 	color_up = al_get_pixel(esheet, *x + 10, *y - 15);
 	color_right = al_get_pixel(esheet, *x + 21, *y + 10);
@@ -1342,7 +1458,7 @@ void Collision(int* x, int* y)
 		}
 	}
 
-	// Objectif détécter la collision avec un allié
+	// Objectif dÃ©tÃ©cter la collision avec un alliÃ©
 	if (starprotect <= 0.00) {
 		al_unmap_rgb(color_down, &r, &g, &b);
 		if (r == 255 && g == 200 && b == 0) {
@@ -1392,16 +1508,16 @@ Personnage* CreatePersonnage(ALLEGRO_COLOR color)
 
 	p->color = color;
 
-	// Création d'une bitmap dans la mémoire ram
+	// CrÃ©ation d'une bitmap dans la mÃ©moire ram
 	p->im = al_create_bitmap(p->etx, p->ety);
 
-	// Sélectionner la bitmap pour dessiner
+	// SÃ©lectionner la bitmap pour dessiner
 	al_set_target_bitmap(p->im);
 
 	// Changer la couleur de la bitmap
 	al_clear_to_color(p->color);
 
-	// Retour au double buffer pour affiche écran
+	// Retour au double buffer pour affiche Ã©cran
 	al_set_target_backbuffer(al_get_current_display());
 
 	return p;
@@ -1420,7 +1536,7 @@ void AffichePersonnage(Personnage* p)
 
 void AvancePersonnage(Personnage* p)
 {
-	// Déplacement horizontal
+	// DÃ©placement horizontal
 	p->ex += p->edx;
 	if (p->ex < 0) {
 		p->ex = 0;
@@ -1431,7 +1547,7 @@ void AvancePersonnage(Personnage* p)
 		p->edx = ((float)rand() / RAND_MAX) * -5;
 	}
 
-	// Déplacement vertical
+	// DÃ©placement vertical
 	p->ey += p->edy;
 	if (p->ey < 0) {
 		p->ey = 0;
