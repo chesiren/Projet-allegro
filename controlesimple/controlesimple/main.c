@@ -1220,7 +1220,7 @@ void RunGame(int niveau)
 
 			// Image des hitbox obstacles/sol
 			if (HitboxDisplay == 1)
-				al_draw_scaled_bitmap(hitbox, dx3, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
+				al_draw_bitmap(hitbox, -dx3, 0, 0);
 
 			// Image des hitbox d'ennemis/étoiles
 			if (ESheetDisplay == 1)
@@ -1411,12 +1411,12 @@ void Collision(int* x, int* y)
 {
 	// Collisions sol/obstacles 
 	// Objectif autoriser le déplacement ou pas
-	color_down = al_get_pixel(hitbox, *x + 20+dx3, *y + 51);
-	color_up = al_get_pixel(hitbox, *x + 20+dx3, *y - 30);
-	color_right1 = al_get_pixel(hitbox, *x + 41+dx3, *y + 15);
-	color_right2 = al_get_pixel(hitbox, *x + 41+dx3, *y + 35);
-	color_left1 = al_get_pixel(hitbox, *x - 1+dx3, *y + 15);
-	color_left2 = al_get_pixel(hitbox, *x - 1+dx3, *y + 35);
+	color_down = al_get_pixel(hitbox, *x + 20 + dx3, *y + 51);
+	color_up = al_get_pixel(hitbox, *x + 20 + dx3, *y - 30);
+	color_right1 = al_get_pixel(hitbox, *x + 41 + dx3, *y + 15);
+	color_right2 = al_get_pixel(hitbox, *x + 41 + dx3, *y + 35);
+	color_left1 = al_get_pixel(hitbox, *x - 1 + dx3, *y + 15);
+	color_left2 = al_get_pixel(hitbox, *x - 1 + dx3, *y + 35);
 
 	al_unmap_rgb(color_down, &r, &g, &b);
 	c_down = 0;
