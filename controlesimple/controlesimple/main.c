@@ -78,6 +78,19 @@ void Initialisation()
 		Error("al_load_backgroundmenu()");
 
 	// Images personages
+	monster1 = al_load_bitmap("monster1.png");
+	if (!monster1)
+		Error("monster1");
+	monster2 = al_load_bitmap("monster2.png");
+	if (!monster2)
+		Error("monster2");
+	monster3 = al_load_bitmap("monster3.png");
+	if (!monster3)
+		Error("monster3");
+	bpiece = al_load_bitmap("piece.png");
+	if (!bpiece)
+		Error("bpiece");
+
 	Animwait[0] = al_load_bitmap("joueur/Animwait1.png");
 	if (!Animwait[0])
 		Error("Animwait1");
@@ -519,7 +532,7 @@ void RunMenuSandbox()
 			al_draw_filled_rectangle(SCREENX * 0.2, SCREENY * 0.2, SCREENX * 0.8, SCREENY * 0.8, LIGHTGREY);
 
 			// Texte
-			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.26, ALLEGRO_ALIGN_LEFT, etoile[language]);
+			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.26, ALLEGRO_ALIGN_LEFT, coins[language]);
 			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.32, ALLEGRO_ALIGN_LEFT, ennemi[language]);
 			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.38, ALLEGRO_ALIGN_LEFT, tmpsprotec[language]);
 			al_draw_textf(arial32, BLACK, SCREENX * 0.25, SCREENY * 0.44, ALLEGRO_ALIGN_LEFT, vie[language]);
@@ -827,14 +840,14 @@ void RunOptions()
 void ResetGame()
 {
 	// Remettre aux valeurs par défaut les variables
-	PERSONNAGEMAX = 10;
-	ETOILEMAX = 3;
-	TICK = 30;
+	PERSONNAGEMAX = 5;
+	PIECEMAX = 3;
+	TICK = 20;
 	life = 3;
-	star = ETOILEMAX;
+	piece = PIECEMAX;
 	Death = 0;
 	protect = 2.00;
-	starprotect = 0.00;
+	pieceprotect = 0.00;
 	jump = 0.00;
 	pulse = 20.00;
 	gravity = -2.00;
@@ -846,11 +859,8 @@ void ResetGame()
 	dx1 = 0;
 	dx2 = 0;
 
-	for (int i = 0; i < PERSONNAGEMAX; i++)
-		personnages[i] = CreatePersonnage(RED);
-
-	for (int i = 0; i < ETOILEMAX; i++)
-		personnagesy[i] = CreatePersonnage(YELLOW);
+	for (int i = 0; i < PIECEMAX; i++)
+		personnagesy[i] = CreatePersonnage(YELLOW, 0);
 }
 
 /*******************************************
@@ -861,7 +871,7 @@ void RunGame(int niveau)
 {
 	switch (niveau) {
 	case 0: // sandbox
-		ETOILEMAX = sbplus[2][0];
+		PIECEMAX = sbplus[2][0];
 		PERSONNAGEMAX = sbplus[2][1];
 		protect = (float)sbplus[2][2];
 		life = sbplus[2][3];
@@ -871,9 +881,9 @@ void RunGame(int niveau)
 		dpulse = (float)sbplus[2][5];
 		fond = sbplus[2][6];
 
-		star = ETOILEMAX;
+		piece = PIECEMAX;
 		Death = 0;
-		starprotect = 0.00;
+		pieceprotect = 0.00;
 		jump = 0.00;
 		HitboxDisplay = 0;
 		ESheetDisplay = 0;
@@ -885,10 +895,10 @@ void RunGame(int niveau)
 		dx3 = 0;
 
 		for (int i = 0; i < PERSONNAGEMAX; i++)
-			personnages[i] = CreatePersonnage(RED);
+			personnages[i] = CreatePersonnage(RED, fond);
 
-		for (int i = 0; i < ETOILEMAX; i++)
-			personnagesy[i] = CreatePersonnage(YELLOW);
+		for (int i = 0; i < PIECEMAX; i++)
+			personnagesy[i] = CreatePersonnage(YELLOW, 0);
 
 		switch (fond) {
 		case 1: // niveau 1
@@ -962,6 +972,8 @@ void RunGame(int niveau)
 		hitbox = al_load_bitmap("forest1/Layers/platformhitbox.png");
 		if (!hitbox)
 			Error("al_load_hitbox()");
+		for (int i = 0; i < PERSONNAGEMAX; i++)
+			personnages[i] = CreatePersonnage(RED, 1);
 		break;
 	case 2: // niveau 2
 		ResetGame();
@@ -980,6 +992,8 @@ void RunGame(int niveau)
 		hitbox = al_load_bitmap("forest2/Layers/platformhitbox.png");
 		if (!hitbox)
 			Error("al_load_hitbox()");
+		for (int i = 0; i < PERSONNAGEMAX; i++)
+			personnages[i] = CreatePersonnage(RED, 2);
 		break;
 	case 3: // niveau 3
 		ResetGame();
@@ -998,6 +1012,8 @@ void RunGame(int niveau)
 		hitbox = al_load_bitmap("forest3/Layers/platformhitbox.png");
 		if (!hitbox)
 			Error("al_load_hitbox()");
+		for (int i = 0; i < PERSONNAGEMAX; i++)
+			personnages[i] = CreatePersonnage(RED, 3);
 		break;
 	}
 
@@ -1068,9 +1084,9 @@ void RunGame(int niveau)
 			if (protect > 0.00)
 				protect -= 0.02;
 
-			// protection étoile
-			if (starprotect > 0.00)
-				starprotect -= 0.02;
+			// protection pièce
+			if (pieceprotect > 0.00)
+				pieceprotect -= 0.02;
 
 			// gravitée/saut
 			// en train de sauter?
@@ -1210,7 +1226,7 @@ void RunGame(int niveau)
 			if (ESheetDisplay == 1)
 				al_draw_scaled_bitmap(esheet, dx3, 0, 1024, 768, 0, 0, SCREENX, SCREENY, 0);
 
-			// Images des coeurs
+			// Images de la vie
 			if (life >= 1)
 				al_draw_bitmap(or, 100, 0, 0);
 			if (life >= 2)
@@ -1224,7 +1240,7 @@ void RunGame(int niveau)
 			if (life >= 6)
 				al_draw_bitmap(or, 350, 0, 0);
 
-			// Nettoyage des anciennes images d'ennemis/étoiles
+			// Nettoyage des anciennes images d'ennemis/pièces 
 			al_set_target_bitmap(esheet);
 			al_clear_to_color(BLACK);
 			al_set_target_backbuffer(al_get_current_display());
@@ -1234,8 +1250,8 @@ void RunGame(int niveau)
 				AvancePersonnage(personnages[i]);
 				AffichePersonnage(personnages[i]);
 			}
-			// Affichage des étoiles
-			for (int i = 0; i < star; i++) {
+			// Affichage des pièces
+			for (int i = 0; i < piece; i++) {
 				AvancePersonnage(personnagesy[i]);
 				AffichePersonnage(personnagesy[i]);
 			}
@@ -1265,70 +1281,67 @@ void RunGame(int niveau)
 					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, LIGHTBLUE, arial72, WHITE, menu_p[language]);
 			}
 			else {
-				// Cube joueur
-				if (protect > 0.00)
-					al_draw_filled_rectangle(x, y, x + 20, y + 20, CUBEHIT);
-				else if (starprotect > 0.00)
-					al_draw_filled_rectangle(x, y, x + 20, y + 20, CUBEHITSTAR);
-				else
-					al_draw_filled_rectangle(x, y, x + 20, y + 20, CUBE);
-			}
+				// Cube joueur (debug hitbox)
+				//if (protect > 0.00)
+				//	al_draw_filled_rectangle(x, y, x + 40, y + 50, CUBEHIT);
+				//else if (pieceprotect > 0.00)
+				//	al_draw_filled_rectangle(x, y, x + 40, y + 50, CUBEHITPIECE);
+				//else
+				//	al_draw_filled_rectangle(x, y, x + 40, y + 50, CUBE);
 
-			//Animation personnage principale
-			if (Death == 0) {
-				if (key[KEY_RIGHT] == 1 && c_right == 0) {
+				//Animation personnage principale
+				if (key[KEY_RIGHT] == 1) {
 					//La vitesse entre les sprits
-					k += 1;
-					if (k > 3) {
-						l += 1;
-						if (l > 5) {
-							l = 0;
+					k1 += 1;
+					if (k1 > 3) {
+						l1 += 1;
+						if (l1 > 5) {
+							l1 = 0;
 						}
-						k = 0;
+						k1 = 0;
 					}
 					orientation = 1;
-					al_draw_bitmap(Animrun[l], x + 2, y - 2, 0);
+					al_draw_scaled_bitmap(Animrun[l1], 0, 0, al_get_bitmap_width(Animrun[l1]), al_get_bitmap_height(Animrun[l1]), x, y, al_get_bitmap_width(Animrun[l1]) * 2, al_get_bitmap_height(Animrun[l1]) * 2, 0);
 				}
-				else if (key[KEY_LEFT] == 1 && c_left == 0) {
-					k += 1;
-					if (k > 3) {
-						l += 1;
-						if (l > 5) {
-							l = 0;
+				else if (key[KEY_LEFT] == 1) {
+					k2 += 1;
+					if (k2 > 3) {
+						l2 += 1;
+						if (l2 > 5) {
+							l2 = 0;
 						}
-						k = 0;
+						k2 = 0;
 					}
 					orientation = 0;
-					al_draw_bitmap(Animrun[l], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
+					al_draw_scaled_bitmap(Animrun[l2], 0, 0, al_get_bitmap_width(Animrun[l2]), al_get_bitmap_height(Animrun[l2]), x, y, al_get_bitmap_width(Animrun[l2]) * 2, al_get_bitmap_height(Animrun[l2]) * 2, ALLEGRO_FLIP_HORIZONTAL);
 				}
-				else if (jump > 0) {
-					k += 1;
-					if (k > 3) {
-						l += 1;
-						if (l > 7) {
-							l = 0;
+				else if (jump > 0 || c_down == 0) {
+					k3 += 1;
+					if (k3 > 3) {
+						l3 += 1;
+						if (l3 > 7) {
+							l3 = 0;
 						}
-						k = 0;
+						k3 = 0;
 					}
 					if (orientation)
-						al_draw_bitmap(Animjump[l], x + 2, y - 2, 0);
+						al_draw_scaled_bitmap(Animjump[l3], 0, 0, al_get_bitmap_width(Animjump[l3]), al_get_bitmap_height(Animjump[l3]), x, y, al_get_bitmap_width(Animjump[l3]) * 2, al_get_bitmap_height(Animjump[l3]) * 2, 0);
 					else
-						al_draw_bitmap(Animjump[l], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
+						al_draw_scaled_bitmap(Animjump[l3], 0, 0, al_get_bitmap_width(Animjump[l3]), al_get_bitmap_height(Animjump[l3]), x, y, al_get_bitmap_width(Animjump[l3]) * 2, al_get_bitmap_height(Animjump[l3]) * 2, ALLEGRO_FLIP_HORIZONTAL);
 				}
-				if (key[KEY_DOWN] == 0 && key[KEY_UP] == 0 && key[KEY_LEFT] == 0 && key[KEY_RIGHT] == 0 && jump <= 0)
-				{
-					k += 1;
-					if (k > 6) {
-						l += 1;
-						if (l > 3) {
-							l = 0;
+				else if (key[KEY_UP] == 0 && key[KEY_LEFT] == 0 && key[KEY_RIGHT] == 0 && jump <= 0 && c_down == 1) {
+					k4 += 1;
+					if (k4 > 6) {
+						l4 += 1;
+						if (l4 > 3) {
+							l4 = 0;
 						}
-						k = 0;
+						k4 = 0;
 					}
 					if (orientation)
-						al_draw_bitmap(Animwait[l], x + 2, y - 2, 0);
+						al_draw_scaled_bitmap(Animwait[l4], 0, 0, al_get_bitmap_width(Animwait[l4]), al_get_bitmap_height(Animwait[l4]), x, y, al_get_bitmap_width(Animwait[l4]) * 2, al_get_bitmap_height(Animwait[l4]) * 2, 0);
 					else
-						al_draw_bitmap(Animwait[l], x + 2, y - 2, ALLEGRO_FLIP_HORIZONTAL);
+						al_draw_scaled_bitmap(Animwait[l4], 0, 0, al_get_bitmap_width(Animwait[l4]), al_get_bitmap_height(Animwait[l4]), x, y, al_get_bitmap_width(Animwait[l4]) * 2, al_get_bitmap_height(Animwait[l4]) * 2, ALLEGRO_FLIP_HORIZONTAL);
 				}
 			}
 
@@ -1398,12 +1411,12 @@ void Collision(int* x, int* y)
 {
 	// Collisions sol/obstacles 
 	// Objectif autoriser le déplacement ou pas
-	ALLEGRO_COLOR color_down = al_get_pixel(hitbox, *x + 10+dx3, *y + 21);
-	ALLEGRO_COLOR color_up = al_get_pixel(hitbox, *x + 10+dx3, *y - 15);
-	ALLEGRO_COLOR color_right = al_get_pixel(hitbox, *x + 21+dx3, *y + 10);
-	ALLEGRO_COLOR color_left = al_get_pixel(hitbox, *x - 1+dx3, *y + 10);
-
-	unsigned char r, g, b;
+	color_down = al_get_pixel(hitbox, *x + 20+dx3, *y + 51);
+	color_up = al_get_pixel(hitbox, *x + 20+dx3, *y - 30);
+	color_right1 = al_get_pixel(hitbox, *x + 41+dx3, *y + 15);
+	color_right2 = al_get_pixel(hitbox, *x + 41+dx3, *y + 35);
+	color_left1 = al_get_pixel(hitbox, *x - 1+dx3, *y + 15);
+	color_left2 = al_get_pixel(hitbox, *x - 1+dx3, *y + 35);
 
 	al_unmap_rgb(color_down, &r, &g, &b);
 	c_down = 0;
@@ -1418,81 +1431,106 @@ void Collision(int* x, int* y)
 		c_up = 1;
 	}
 
-	al_unmap_rgb(color_right, &r, &g, &b);
+	al_unmap_rgb(color_right1, &r, &g, &b);
 	c_right = 0;
 	if (r == 0 && g == 128 && b == 0) {
 		c_right = 1;
 	}
 
-	al_unmap_rgb(color_left, &r, &g, &b);
+	al_unmap_rgb(color_right2, &r, &g, &b);
+	c_right = 0;
+	if (r == 0 && g == 128 && b == 0) {
+		c_right = 1;
+	}
+
+	al_unmap_rgb(color_left1, &r, &g, &b);
+	c_left = 0;
+	if (r == 0 && g == 128 && b == 0) {
+		c_left = 1;
+	}
+
+	al_unmap_rgb(color_left2, &r, &g, &b);
 	c_left = 0;
 	if (r == 0 && g == 128 && b == 0) {
 		c_left = 1;
 	}
 
 	// Objectif détecter la collision avec un ennemi
-	color_down = al_get_pixel(esheet, *x + 10, *y + 21);
-	color_up = al_get_pixel(esheet, *x + 10, *y - 15);
-	color_right = al_get_pixel(esheet, *x + 21, *y + 10);
-	color_left = al_get_pixel(esheet, *x - 1, *y + 10);
+	color_down = al_get_pixel(esheet, *x + 20, *y + 51);
+	color_up = al_get_pixel(esheet, *x + 20, *y - 30);
+	color_right1 = al_get_pixel(esheet, *x + 41, *y + 15);
+	color_right2 = al_get_pixel(esheet, *x + 41, *y + 35);
+	color_left1 = al_get_pixel(esheet, *x - 1, *y + 15);
+	color_left2 = al_get_pixel(esheet, *x - 1, *y + 35);
 
-	if (protect <= 0.00) {
-		al_unmap_rgb(color_down, &r, &g, &b);
-		if (r == 200 && g == 0 && b == 0) {
-			Kill();
-		}
-
-		al_unmap_rgb(color_up, &r, &g, &b);
-		if (r == 200 && g == 0 && b == 0) {
-			Kill();
-		}
-
-		al_unmap_rgb(color_right, &r, &g, &b);
-		if (r == 200 && g == 0 && b == 0) {
-			Kill();
-		}
-
-		al_unmap_rgb(color_left, &r, &g, &b);
-		if (r == 200 && g == 0 && b == 0) {
-			Kill();
-		}
+	al_unmap_rgb(color_down, &r, &g, &b);
+	if (r == 200 && g == 0 && b == 0 && protect <= 0.00) {
+		Kill();
+	}
+	printf("(%d,%d,%d)\n", r, g, b); // debug
+	if (r == 255 && g == 200 && b == 0 && pieceprotect <= 0.00) {
+		piece -= 1;
+		life += 1;
+		pieceprotect = 1.00;
 	}
 
-	// Objectif détécter la collision avec un allié
-	if (starprotect <= 0.00) {
-		al_unmap_rgb(color_down, &r, &g, &b);
-		if (r == 255 && g == 200 && b == 0) {
-			star -= 1;
-			life += 1;
-			starprotect = 1.00;
-		}
-
-		al_unmap_rgb(color_up, &r, &g, &b);
-		if (r == 255 && g == 200 && b == 0) {
-			star -= 1;
-			life += 1;
-			starprotect = 1.00;
-		}
-
-		al_unmap_rgb(color_right, &r, &g, &b);
-		if (r == 255 && g == 200 && b == 0) {
-			star -= 1;
-			life += 1;
-			starprotect = 1.00;
-		}
-
-		al_unmap_rgb(color_left, &r, &g, &b);
-		if (r == 255 && g == 200 && b == 0) {
-			star -= 1;
-			life += 1;
-			starprotect = 1.00;
-		}
+	al_unmap_rgb(color_up, &r, &g, &b);
+	if (r == 200 && g == 0 && b == 0 && protect <= 0.00) {
+		Kill();
 	}
 
-	//printf("(%d,%d,%d)\n", r, g, b); // debug
+	if (r == 255 && g == 200 && b == 0 && pieceprotect <= 0.00) {
+		piece -= 1;
+		life += 1;
+		pieceprotect = 1.00;
+	}
+
+	al_unmap_rgb(color_right1, &r, &g, &b);
+	if (r == 200 && g == 0 && b == 0 && protect <= 0.00) {
+		Kill();
+	}
+
+	if (r == 255 && g == 200 && b == 0 && pieceprotect <= 0.00) {
+		piece -= 1;
+		life += 1;
+		pieceprotect = 1.00;
+	}
+
+	al_unmap_rgb(color_right2, &r, &g, &b);
+	if (r == 200 && g == 0 && b == 0 && protect <= 0.00) {
+		Kill();
+	}
+
+	if (r == 255 && g == 200 && b == 0 && pieceprotect <= 0.00) {
+		piece -= 1;
+		life += 1;
+		pieceprotect = 1.00;
+	}
+
+	al_unmap_rgb(color_left1, &r, &g, &b);
+	if (r == 200 && g == 0 && b == 0 && protect <= 0.00) {
+		Kill();
+	}
+
+	if (r == 255 && g == 200 && b == 0 && pieceprotect <= 0.00) {
+		piece -= 1;
+		life += 1;
+		pieceprotect = 1.00;
+	}
+
+	al_unmap_rgb(color_left2, &r, &g, &b);
+	if (r == 200 && g == 0 && b == 0 && protect <= 0.00) {
+		Kill();
+	}
+	if (r == 255 && g == 200 && b == 0 && pieceprotect <= 0.00) {
+		piece -= 1;
+		life += 1;
+		pieceprotect = 1.00;
+	}
+	
 }
 
-Personnage* CreatePersonnage(ALLEGRO_COLOR color)
+Personnage* CreatePersonnage(ALLEGRO_COLOR color, int type)
 {
 	Personnage* p = (Personnage*)malloc(sizeof(Personnage));
 	// Localisation
@@ -1502,11 +1540,28 @@ Personnage* CreatePersonnage(ALLEGRO_COLOR color)
 	//p->edx = (float)rand() / RAND_MAX * 50 - 25;
 	//p->edy = (float)rand() / RAND_MAX * 50 - 25;
 
+	p->type = type;
+
 	// Taille
-	p->etx = 20; 
-	p->ety = 20;
+	if (p->type == 0){
+		p->etx = 37;
+		p->ety = 55;
+	}
+	else if (p->type == 1) {
+		p->etx = 32;
+		p->ety = 34;
+	}
+	else if (p->type == 2) {
+		p->etx = 42;
+		p->ety = 36;
+	}
+	else if (p->type == 3) {
+		p->etx = 34;
+		p->ety = 34;
+	}
 
 	p->color = color;
+	p->sens = 1;
 
 	// Création d'une bitmap dans la mémoire ram
 	p->im = al_create_bitmap(p->etx, p->ety);
@@ -1527,11 +1582,31 @@ void AffichePersonnage(Personnage* p)
 {
 	// Dessiner la hitbox
 	al_set_target_bitmap(esheet);
-	al_draw_filled_rectangle(p->ex-dx3, p->ey, p->ex + 20-dx3, p->ey + 20, p->color);
+	al_draw_filled_rectangle(p->ex - dx3, p->ey, p-> ex + p->etx - dx3, p->ey + p->ety, p->color);
 	
 	// Dessiner sur l'image de fond
 	al_set_target_backbuffer(al_get_current_display());
-	al_draw_bitmap(p->im, p->ex-dx3, p->ey, 0);
+	//al_draw_bitmap(p->im, p->ex-dx3, p->ey, 0); // debug hitbox
+	if (p->type == 0)
+		if (p->sens)
+			al_draw_bitmap(bpiece, p->ex - dx3, p->ey, 0);
+		else
+			al_draw_bitmap(bpiece, p->ex - dx3, p->ey, ALLEGRO_FLIP_HORIZONTAL);
+	else if (p->type == 1)
+		if (p->sens)
+			al_draw_bitmap(monster1, p->ex - dx3, p->ey, 0);
+		else
+			al_draw_bitmap(monster1, p->ex - dx3, p->ey, ALLEGRO_FLIP_HORIZONTAL);
+	else if (p->type == 2)
+		if (p->sens)
+			al_draw_bitmap(monster2, p->ex - dx3, p->ey, 0);
+		else
+			al_draw_bitmap(monster2, p->ex - dx3, p->ey, ALLEGRO_FLIP_HORIZONTAL);
+	else if (p->type == 3)
+		if (p->sens)
+			al_draw_bitmap(monster3, p->ex - dx3, p->ey, 0);
+		else
+			al_draw_bitmap(monster3, p->ex - dx3, p->ey, ALLEGRO_FLIP_HORIZONTAL);
 }
 
 void AvancePersonnage(Personnage* p)
@@ -1541,10 +1616,12 @@ void AvancePersonnage(Personnage* p)
 	if (p->ex < 0) {
 		p->ex = 0;
 		p->edx = ((float)rand() / RAND_MAX) * 10;
+		p->sens = 1;
 	}
 	if (p->ex + p->etx >= SCREENX) {
 		p->ex = SCREENX - p->etx;
 		p->edx = ((float)rand() / RAND_MAX) * -5;
+		p->sens = 0;
 	}
 
 	// Déplacement vertical

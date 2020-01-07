@@ -74,13 +74,13 @@
     <Allegro_AddonDialog>true</Allegro_AddonDialog>
     <Allegro_AddonImage>true</Allegro_AddonImage>
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
-    <Allegro_AddonAudio>true</Allegro_AddonAudio>
-    <Allegro_AddonAcodec>true</Allegro_AddonAcodec>
-    <Allegro_AddonPhysfs>true</Allegro_AddonPhysfs>
-    <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
+    <Allegro_AddonAudio>false</Allegro_AddonAudio>
+    <Allegro_AddonAcodec>false</Allegro_AddonAcodec>
+    <Allegro_AddonPhysfs>false</Allegro_AddonPhysfs>
+    <Allegro_AddonMemfile>false</Allegro_AddonMemfile>
     <Allegro_AddonFont>true</Allegro_AddonFont>
     <Allegro_AddonColor>true</Allegro_AddonColor>
-    <Allegro_AddonVideo>true</Allegro_AddonVideo>
+    <Allegro_AddonVideo>false</Allegro_AddonVideo>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>

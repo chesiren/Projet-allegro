@@ -24,7 +24,7 @@
 #define BLUE al_map_rgb(0,0,255)
 #define CUBE al_map_rgb(0,0,255)
 #define CUBEHIT al_map_rgb(100,0,150)
-#define CUBEHITSTAR al_map_rgb(0,100,150)
+#define CUBEHITPIECE al_map_rgb(0,100,150)
 #define PURPLE al_map_rgb(128,0,255)
 #define GREEN al_map_rgb(0,128,0)
 #define RED al_map_rgb(200,0,0)
@@ -32,8 +32,8 @@
 #define YELLOW al_map_rgb(255,200,0)
 
 int PERSONNAGEMAX = 10;
-int ETOILEMAX = 3;
-int TICK = 30;
+int PIECEMAX = 3;
+int TICK = 20;
 
 // Le contrôle de la fuidité du clavier
 enum { KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT, KEY_MAX };
@@ -79,26 +79,40 @@ ALLEGRO_BITMAP* vignette3;
 ALLEGRO_BITMAP* esheet;
 ALLEGRO_BITMAP* or;
 ALLEGRO_BITMAP* hitbox;
+ALLEGRO_BITMAP* monster1;
+ALLEGRO_BITMAP* monster2;
+ALLEGRO_BITMAP* monster3;
+ALLEGRO_BITMAP* bpiece;
+
 //Sprits personnages
 ALLEGRO_BITMAP* Animwait[4];
 ALLEGRO_BITMAP* Animrun[6];
 ALLEGRO_BITMAP* Animjump[8];
 
-int k, l = 0;
+// Color
+ALLEGRO_COLOR color_down;
+ALLEGRO_COLOR color_up;
+ALLEGRO_COLOR color_right1;
+ALLEGRO_COLOR color_right2;
+ALLEGRO_COLOR color_left1;
+ALLEGRO_COLOR color_left2;
+
+int k1, k2, k3, k4, l1, l2, l3, l4 = 0;
 bool orientation = 0;
 int SCREENX;
 int SCREENY;
 int SCREENXD;
 int SCREENYD;
+unsigned char r, g, b;
 int mx, my, x, y;
 int life;
 int fond = 0;
-int star;
+int piece;
 int dx0=0, dx1=0, dx2=0, dx3=0; // Coordonnées des backgrounds et platforme
 int fontsize;
 int language = 0;
 float protect;
-float starprotect;
+float pieceprotect;
 int sbplus[3][7] = { 51, 48, 50, 51, 50, 48, 49,
 					 48, 49, 48, 48, 48, 49, 48,
 					 3, 10, 2, 3, 2, 10, 1 };
@@ -152,7 +166,7 @@ char menu_p[2][16] = { "Menu principal", "Main menu" };
 
 // Sandbox
 char commencer[2][16] = { "Commencer", "Start" };
-char etoile[2][16] = { "Etoiles", "Stars" };
+char coins[2][16] = { "Pieces", "Coins" };
 char ennemi[2][16] = { "Ennemis", "Enemies" };
 char tmpsprotec[2][18] = { "Temps protection", "Protect time" };
 char vie[2][16] = { "Vies", "Life" };
@@ -164,11 +178,13 @@ typedef struct Personnage {
 	float ex, ey;				// Position
 	float edx, edy;				// Déplacement
 	int etx, ety;				// Taille
+	int type;					// Type
+	bool sens;					// Sens
 	ALLEGRO_COLOR color;		// Couleur
 	ALLEGRO_BITMAP* im;			// L'image associé
 }Personnage;
 
-Personnage* CreatePersonnage(ALLEGRO_COLOR color);
+Personnage* CreatePersonnage(ALLEGRO_COLOR color, int type);
 void AffichePersonnage(Personnage* p);
 void AvancePersonnage(Personnage* p);
 
