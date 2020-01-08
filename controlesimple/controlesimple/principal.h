@@ -139,6 +139,7 @@ bool Options = 0;
 bool Credit = 0;
 bool Game = 0;
 bool Death = 0;
+bool Victoire = 0;
 
 bool HitboxDisplay = 0;
 bool ESheetDisplay = 0;
@@ -162,6 +163,7 @@ char txtcredit3[2][100] = { "Icones: https://craftpix.net/freebies/free-game-ico
 
 // Mort
 char rejouer[2][16] = { "Rejouer", "Play again" };
+char suivant[2][16] = { "Niveau suivant", "Next level" };
 char menu_p[2][16] = { "Menu principal", "Main menu" };
 
 // Sandbox

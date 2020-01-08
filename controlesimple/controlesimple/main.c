@@ -1157,6 +1157,7 @@ void RunGame(int niveau)
 				Options = 0; // Bouton retour
 				Game = 0;
 			}
+			// Menu mort
 			if (event.mouse.button == 1 && Death == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48)) {
 				x = SCREENXD;
 				y = SCREENYD; // Bouton rejouer
@@ -1165,6 +1166,24 @@ void RunGame(int niveau)
 			if (event.mouse.button == 1 && Death == 1 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65)) {
 				Game = 0;
 				Menu = 1; // Bouton menu principal
+			}
+			// Menu victoire
+			if (event.mouse.button == 1 && piece == 0 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48)) {
+				// Bouton rejouer/niveau suivant
+				if (niveau == 0 || niveau == 3) {
+					x = SCREENXD;
+					y = SCREENYD;
+					RunGame(niveau);
+				}
+				else {
+					x = SCREENXD;
+					y = SCREENYD;
+					RunGame(niveau+1);
+				}
+			}
+			if (event.mouse.button == 1 && piece == 0 && mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65)) {
+				Game = 0; // Bouton menu principal
+				RunMenu();
 			}
 		}
 		// Evenement souris relâche
@@ -1262,6 +1281,7 @@ void RunGame(int niveau)
 			else
 				Button(0, 0, 60, 40, RED, arial32, BLACK, "<==");
 
+
 			// Menu de mort
 			if (Death == 1)
 			{
@@ -1273,6 +1293,32 @@ void RunGame(int niveau)
 					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLACK, arial72, WHITE, rejouer[language]);
 				else
 					Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLUE, arial72, WHITE, rejouer[language]);
+
+				// Bouton menu principal
+				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65))
+					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, BLACK, arial72, WHITE, menu_p[language]);
+				else
+					Button(SCREENX * 0.25, SCREENY * 0.52, SCREENX * 0.75, SCREENY * 0.65, LIGHTBLUE, arial72, WHITE, menu_p[language]);
+			}
+			// Menu de victoire
+			else if (piece == 0)
+			{
+				// Rectangle gris milieu
+				al_draw_filled_rectangle(SCREENX * 0.2, SCREENY * 0.3, SCREENX * 0.8, SCREENY * 0.7, GREY);
+
+				// Bouton niveau suivant
+				if (niveau == 0 || niveau == 3) {
+					if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48))
+						Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLACK, arial72, WHITE, rejouer[language]);
+					else
+						Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLUE, arial72, WHITE, rejouer[language]);
+				}
+				else {
+					if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.35) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.48))
+						Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLACK, arial72, WHITE, suivant[language]);
+					else
+						Button(SCREENX * 0.25, SCREENY * 0.35, SCREENX * 0.75, SCREENY * 0.48, BLUE, arial72, WHITE, suivant[language]);
+				}
 
 				// Bouton menu principal
 				if (mx >= (SCREENX * 0.25) && my >= (SCREENY * 0.52) && mx <= (SCREENX * 0.75) && my <= (SCREENY * 0.65))
